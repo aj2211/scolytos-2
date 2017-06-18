@@ -216,7 +216,7 @@ private void updateGridViewsForm3(object sender, EventArgs e)
         masterselect += " c.[species] ='" + comboBox3.Text + "'";
     }
     //            string speciescodeselect = "SELECT SpCode, species FROM [Species_table]" + masterselect;
-    string relationselect = "SELECT b.[SpCode], a.[vial], b.[record], (c.[SpCode] & ' - ' & c.[Genus] & ' ' & c.[Species]) as [Species In Vial], b.[count], b.[male], b.[pair/family], b.[collector/museum], b.[SPECIES_note], b.[borrowed_count], b.[returned_date], b.[loaned_to], b.[loaned_number], b.[from plate], b.[PINNED], d.[identifier] FROM ((([COLLECTIONS] a LEFT OUTER JOIN [SPECIES_IN_COLLECTIONS] b ON a.[vial] = b.[vial]) LEFT OUTER JOIN [Species_table] c ON b.[SpCode] = c.[SpCode]) LEFT OUTER JOIN [Identifiers] d on b.[record] = d.[record]) " + masterselect;
+    string relationselect = "SELECT b.[SpCode], a.[vial], b.[record], (c.[SpCode] & ' - ' & c.[Genus] & ' ' & c.[Species]) as [Species In Vial], b.[count], b.[male], b.[pair/family], b.[collector/museum], b.[SPECIES_note], b.[borrowed_count], b.[returned_date], b.[loaned_to], b.[loaned_number], b.[from plate], b.[PINNED], b.[identifier] FROM (([COLLECTIONS] a LEFT OUTER JOIN [SPECIES_IN_COLLECTIONS] b ON a.[vial] = b.[vial]) LEFT OUTER JOIN [Species_table] c ON b.[SpCode] = c.[SpCode]) " + masterselect;
     //            DataSet SpCode = new DataSet();
     DataSet Relation = new DataSet();
     OleDbCommand fetch = new OleDbCommand(relationselect, this.thefile.dbo);
@@ -253,73 +253,72 @@ private void dataGridView1_MouseUp(object sender, MouseEventArgs e)
     {
         editted = this.dataGridView1.SelectedRows;
     }
-
     if (editted.Count > 0)
     {
         col = editted[0].Cells;
-        //            MessageBox.Show(col[0].Value.ToString());
+                //            MessageBox.Show(col[0].Value.ToString());
 
-        try
-        {
-            string picturecommand = "SELECT b.[ImagePath] FROM([Species_table] a RIGHT JOIN[Images] b ON a.[SpCode] = b.[SpCode]) WHERE a.[SpCode] = " + col[0].Value.ToString();
-            this.pictureset = new DataSet();
-            OleDbCommand picturefetch = new OleDbCommand(picturecommand, this.thefile.dbo);
-            OleDbDataAdapter fetchadapter = new OleDbDataAdapter(picturefetch);
-            fetchadapter.Fill(this.pictureset, "PICTURESET");
-            this.index = 1;
-            this.indexmax = this.pictureset.Tables["PICTURESET"].Rows.Count;
-            this.picturelabel.Text = this.index + " of " + this.indexmax;
-            if (indexmax < 2)
-            {
-                this.prevbutton.Enabled = false;
-                this.nextbutton.Enabled = false;
-            }
-            else
-            {
-                this.prevbutton.Enabled = false;
-                this.nextbutton.Enabled = true;
-            }
-            if (this.pictureset.Tables["PICTURESET"].Rows.Count > 0)
-            {
-                string a = this.pictureset.Tables["PICTURESET"].Rows[0][0].ToString();
-                string str = this.thefile.root + @"\" + a;
-                if (File.Exists(@str))
+                try
                 {
-                    this.pictureBox1.Image = Image.FromFile(@str);
+                    string picturecommand = "SELECT b.[ImagePath] FROM([Species_table] a RIGHT JOIN[Images] b ON a.[SpCode] = b.[SpCode]) WHERE a.[SpCode] = " + col[0].Value.ToString();
+                    this.pictureset = new DataSet();
+                    OleDbCommand picturefetch = new OleDbCommand(picturecommand, this.thefile.dbo);
+                    OleDbDataAdapter fetchadapter = new OleDbDataAdapter(picturefetch);
+                    fetchadapter.Fill(this.pictureset, "PICTURESET");
+                    this.index = 1;
+                    this.indexmax = this.pictureset.Tables["PICTURESET"].Rows.Count;
                     this.picturelabel.Text = this.index + " of " + this.indexmax;
+                    if (indexmax < 2)
+                    {
+                        this.prevbutton.Enabled = false;
+                        this.nextbutton.Enabled = false;
+                    }
+                    else
+                    {
+                        this.prevbutton.Enabled = false;
+                        this.nextbutton.Enabled = true;
+                    }
+                    if (this.pictureset.Tables["PICTURESET"].Rows.Count > 0)
+                    {
+                        string a = this.pictureset.Tables["PICTURESET"].Rows[0][0].ToString();
+                        string str = this.thefile.root + @"\" + a;
+                        if (File.Exists(@str))
+                        {
+                            this.pictureBox1.Image = Image.FromFile(@str);
+                            this.picturelabel.Text = this.index + " of " + this.indexmax;
+                        }
+                        else
+                        {
+                            this.pictureBox1.Image = null;
+                            this.picturelabel.Text = this.index + " of " + this.indexmax;
+                        }
+                    }
                 }
-                else
-                {
-                    this.pictureBox1.Image = null;
-                    this.picturelabel.Text = this.index + " of " + this.indexmax;
-                }
-            }
-        }
-        catch (NullReferenceException) { }
-        catch (OleDbException) { }
+                catch (NullReferenceException) { MessageBox.Show("e"); }
+                catch (OleDbException f) { MessageBox.Show(f.ToString()); }
         try
         {
             this.comboBox1.Text = col[3].Value.ToString();
         }
-        catch (NullReferenceException) { }
+        catch (NullReferenceException g) { MessageBox.Show("g"); }
         finally { }
         try
         {
             this.comboBox2.Text = col[2].Value.ToString();
         }
-        catch (NullReferenceException) { }
+        catch (NullReferenceException h) { MessageBox.Show("h"); }
         finally { }
         try
         {
             this.comboBox3.Text = col[1].Value.ToString();
         }
-        catch (NullReferenceException) { }
+        catch (NullReferenceException i) { MessageBox.Show("i"); }
         finally { }
         try
         {
             this.mutual.result1 = col[0].Value.ToString();
         }
-        catch (NullReferenceException) { MessageBox.Show("null"); }
+        catch (NullReferenceException j) { MessageBox.Show("null"); }
         finally { }
     }
     else
@@ -528,14 +527,13 @@ private void textBox1_TextChanged(object sender, EventArgs e)
             if (editted.Count > 0)
             {
                 col = editted[0].Cells;
-
+                string tribedungo = "SELECT b.[SpCode], a.[vial], b.[record], (c.[SpCode] & ' - ' & c.[Genus] & ' ' & c.[Species]) as [Species In Vial], b.[count], b.[male], b.[pair/family], b.[collector/museum], b.[SPECIES_note], b.[borrowed_count], b.[returned_date], b.[loaned_to], b.[loaned_number], b.[from plate], b.[PINNED], b.[identifier] FROM (([COLLECTIONS] a LEFT OUTER JOIN [SPECIES_IN_COLLECTIONS] b ON a.[vial] = b.[vial]) LEFT OUTER JOIN [Species_table] c ON b.[SpCode] = c.[SpCode]) WHERE a.[vial] = " + ((col[1].Value.ToString() != null) ? col[1].Value.ToString() : "NULL");
                 try
                 {
                     this.Cursor = Cursors.WaitCursor;
                     this.comboBox1.Text = "";
                     this.comboBox2.Text = "";
                     this.comboBox3.Text = "";
-                    string tribedungo = "SELECT b.[SpCode], a.[vial], b.[record], (c.[SpCode] & ' - ' & c.[Genus] & ' ' & c.[Species]) as [Species In Vial], b.[count], b.[male], b.[pair/family], b.[collector/museum], b.[SPECIES_note], b.[borrowed_count], b.[returned_date], b.[loaned_to], b.[loaned_number], b.[from plate], b.[PINNED], d.[identifier] FROM ((([COLLECTIONS] a LEFT OUTER JOIN [SPECIES_IN_COLLECTIONS] b ON a.[vial] = b.[vial]) LEFT OUTER JOIN [Species_table] c ON b.[SpCode] = c.[SpCode]) LEFT OUTER JOIN [Identifiers] d on b.[record] = d.[record]) WHERE a.[vial] = " + ((col[1].Value.ToString() != null) ? col[1].Value.ToString() : "NULL");
                     OleDbCommand tribesearch = new OleDbCommand(tribedungo, this.thefile.dbo);
                     OleDbDataAdapter tribeadapter = new OleDbDataAdapter(tribesearch);
                     DataSet tribeset = new DataSet();
@@ -548,10 +546,14 @@ private void textBox1_TextChanged(object sender, EventArgs e)
                 }
                 catch (OleDbException error)
                 {
-
+                    MessageBox.Show(error.ToString());
+                    MessageBox.Show(tribedungo);
+                    this.Cursor = Cursors.Default;
+                    this.refresh = true;
                 }
             }
             this.refresh = true;
+
         }
     }
 }

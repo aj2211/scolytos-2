@@ -57,12 +57,12 @@ namespace BeetleBase
             this.thefile.dbo = new OleDbConnection(connect);
             try
             {
-                OleDbCommand test = new OleDbCommand("SELECT b.[record], a.[vial], (c.[SpCode] & ' - ' & c.[Genus] & ' ' & c.[Species]) as [Species In Vial], b.[count], b.[male], b.[pair/family], b.[collector/museum], b.[SPECIES_note], b.[borrowed_count], b.[returned_date], b.[loaned_to], b.[loaned_number], b.[from plate], b.[SpCode], b.[PINNED], d.[identifier] FROM ((([COLLECTIONS] a LEFT OUTER JOIN [SPECIES_IN_COLLECTIONS] b ON a.[vial] = b.[vial]) LEFT OUTER JOIN [Species_table] c ON b.[SpCode] = c.[SpCode]) LEFT OUTER JOIN [Identifiers] d on b.[record] = d.[record])", this.thefile.dbo);
+                OleDbCommand test = new OleDbCommand("SELECT TOP 10 b.[record], a.[vial], (c.[SpCode] & ' - ' & c.[Genus] & ' ' & c.[Species]) as [Species In Vial], b.[count], b.[male], b.[pair/family], b.[collector/museum], b.[SPECIES_note], b.[borrowed_count], b.[returned_date], b.[loaned_to], b.[loaned_number], b.[from plate], b.[SpCode], b.[PINNED], b.[identifier] FROM (([COLLECTIONS] a LEFT OUTER JOIN [SPECIES_IN_COLLECTIONS] b ON a.[vial] = b.[vial]) LEFT OUTER JOIN [Species_table] c ON b.[SpCode] = c.[SpCode])", this.thefile.dbo);
 
                 OleDbDataAdapter begin = new OleDbDataAdapter(test);
                 begin.Fill(this.thefile.main);
                 begin.Dispose();
-                OleDbCommand test2 = new OleDbCommand("SELECT * FROM [COLLECTIONS]", this.thefile.dbo);
+                OleDbCommand test2 = new OleDbCommand("SELECT TOP 10 * FROM [COLLECTIONS]", this.thefile.dbo);
                 OleDbDataAdapter begin2 = new OleDbDataAdapter(test2);
                 begin2.Fill(this.thefile.main2);
                 begin2.Dispose();

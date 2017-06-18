@@ -33,7 +33,7 @@
             System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("[Experiment]");
             System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("[Fungus]");
             System.Windows.Forms.TreeNode treeNode5 = new System.Windows.Forms.TreeNode("[Province]");
-            System.Windows.Forms.TreeNode treeNode6 = new System.Windows.Forms.TreeNode("[Identifers]");
+            System.Windows.Forms.TreeNode treeNode6 = new System.Windows.Forms.TreeNode("[Collector/Museum]");
             System.Windows.Forms.TreeNode treeNode7 = new System.Windows.Forms.TreeNode("Dropdowns", new System.Windows.Forms.TreeNode[] {
             treeNode1,
             treeNode2,
@@ -71,8 +71,8 @@
             treeNode4.Text = "[Fungus]";
             treeNode5.Name = "Province";
             treeNode5.Text = "[Province]";
-            treeNode6.Name = "Identifiers";
-            treeNode6.Text = "[Identifers]";
+            treeNode6.Name = "collectorMuseum";
+            treeNode6.Text = "[Collector/Museum]";
             treeNode7.Name = "DropdownNode";
             treeNode7.Text = "Dropdowns";
             treeNode8.Name = "SpeciesTable";
@@ -85,6 +85,7 @@
             this.treeView1.ShowPlusMinus = false;
             this.treeView1.Size = new System.Drawing.Size(106, 332);
             this.treeView1.TabIndex = 0;
+            this.treeView1.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeView1_AfterSelect);
             this.treeView1.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.treeView1_NodeMouseClick);
             // 
             // dataGridView1

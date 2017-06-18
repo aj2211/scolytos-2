@@ -15,6 +15,7 @@ namespace BeetleBase
     {
         public void form4editenable(bool a)
         {
+            this.checkBox1.Enabled = a;
             this.comboBox1.Enabled = a;
             this.comboBox2.Enabled = a;
             this.comboBox3.Enabled = a;
@@ -25,9 +26,9 @@ namespace BeetleBase
             this.textBox5.Enabled = a;
             this.textBox8.Enabled = a;
             this.textBox9.Enabled = a;
-            this.comboBox7.Enabled = a;
-            this.comboBox8.Enabled = a;
-            this.comboBox9.Enabled = a;
+            this.comboBox7.Enabled = false;
+            this.comboBox8.Enabled = false;
+            this.comboBox9.Enabled = false;
             this.textBox13.Enabled = a;
             this.comboBox10.Enabled = a;
             this.comboBox11.Enabled = a;
@@ -38,11 +39,16 @@ namespace BeetleBase
             this.dataGridView1.Enabled = !a;
             this.textBox1.Enabled = !a;
             this.button7.Enabled = !a;
+            if (!a)
+            {
+                this.checkBox1.Checked = false;
+            }
         }
 
         public void initializeComponent()
         {
             InitializeComponent();
+            this.button1.Focus();
             form4editenable(false);
             this.StartPosition = FormStartPosition.Manual;
             this.Location = new System.Drawing.Point(0, 0);
@@ -105,7 +111,7 @@ namespace BeetleBase
         public mutual mutual;
         public DB thefile;
         public Form2 aa;
-        public void textBox1_KeyUp(object sender, KeyEventArgs e)
+        public void textBox1_KeyUp(object sender, KeyEventArgs e, bool loop)
         {
             if (itsUnderControl)
             {
@@ -120,6 +126,11 @@ namespace BeetleBase
             if (textBox1.Text.Trim() != "")
             {
                 cmd = "SELECT * FROM [COLLECTIONS] WHERE vial = " + textBox1.Text;
+                aa.textBox1.Text = textBox1.Text;
+                if (!loop)
+                {
+                    aa.textBox1_KeyUp(null, null, true);
+                }
             }
             OleDbCommand vialsearch = new OleDbCommand(cmd, this.thefile.dbo);
             OleDbDataAdapter vialadapter = new OleDbDataAdapter(vialsearch);
@@ -209,13 +220,24 @@ namespace BeetleBase
             textBox9.Text = col[7].Value.ToString();
             comboBox4.Text = col[8].Value.ToString();
             comboBox5.Text = col[9].Value.ToString();
+            if (col[14].Value.ToString() == "True")
+            {
+                checkBox1.Checked = true;
+            }
+            else
+            {
+                checkBox1.Checked = false;
+            }
             //            textBox12.Text = col[10].Value.ToString();
             if (words1.Length > 1)
             {
-                comboBox7.Text = words1[2];
-                comboBox8.Text = words1[0];
-                comboBox9.Text = words1[1];
+//                comboBox7.Text = words1[2];
+//                comboBox8.Text = words1[0];
+//                comboBox9.Text = words1[1];
             }
+            comboBox7.Text = DateTime.Now.Year.ToString();
+            comboBox8.Text = (DateTime.Now.Month > 9) ? DateTime.Now.Month.ToString() : ("0" + DateTime.Now.Month.ToString());
+            comboBox9.Text = (DateTime.Now.Day > 9) ? DateTime.Now.Day.ToString() : ("0" + DateTime.Now.Day.ToString());
             textBox13.Text = col[11].Value.ToString();
             //            textBox15.Text = col[12].Value.ToString();
             if (words2.Length > 1)
@@ -242,6 +264,7 @@ namespace BeetleBase
                 this.thefile.dbo.Open();
             }
             string updatemaster = "UPDATE [COLLECTIONS] SET ";
+            // updatemaster += " [vial] = (MAX([vial]) + 1), ";
             updatemaster += " [experiment] = '" + comboBox1.Text + "'";
             if (textBox4.Text == "")
             {
@@ -258,6 +281,14 @@ namespace BeetleBase
             updatemaster += ", [county] = '" + textBox9.Text + "'";
             updatemaster += ", [province] = '" + comboBox4.Text + "'";
             updatemaster += ", [country] = '" + comboBox5.Text + "'";
+            if (checkBox1.Checked)
+            {
+                updatemaster += ", [pair/family] = True";
+            }
+            else
+            {
+                updatemaster += ", [pair/family] = False";
+            }
             if
                 (
                 comboBox7.Text != ""
@@ -305,7 +336,7 @@ namespace BeetleBase
                 MessageBox.Show(updatemaster);
                 return;
             }
-            textBox1_KeyUp(null, null);
+            textBox1_KeyUp(null, null, false);
             button3_Click(null, null);
             form4editenable(false);
         }
@@ -375,16 +406,32 @@ namespace BeetleBase
             {
                 this.thefile.dbo.Open();
             }
-            string insertmaster = "INSERT INTO [COLLECTIONS] ([experiment],";
+            string selectBefore = "SELECT (MAX([vial]) + 1) FROM [COLLECTIONS];";
+            OleDbCommand getNextVial = new OleDbCommand(selectBefore, this.thefile.dbo);
+            DataSet nextHighest = new DataSet();
+            OleDbDataAdapter getNextHighest = new OleDbDataAdapter(getNextVial);
+            getNextHighest.Fill(nextHighest, "next");
+            var next = Int32.Parse(nextHighest.Tables["next"].Rows[0][0].ToString());
+            string insertmaster = "INSERT INTO [COLLECTIONS] ([vial], [experiment],";
             if (textBox4.Text != "" && textBox4.Text != " " && textBox4.Text != "  ")
             {
                 insertmaster += " [field_vial],";
             }
-            insertmaster += "[host_or_trap], [capture->storage], [fungus], [locality], [county], [province], [country], [date], [VIAL_note], [collector/museum], [date collected]) VALUES (";
-            insertmaster += "'" + comboBox1.Text + "', ";
+            insertmaster += "[host_or_trap], [capture->storage], [fungus], [locality], [county], [province], [country], [date], [VIAL_note], [collector/museum], [date collected], [pair/family]) VALUES (";
+            insertmaster += next + ", '" + comboBox1.Text + "', ";
             if (textBox4.Text != "" && textBox4.Text != " " && textBox4.Text != "  ")
             {
-                insertmaster += textBox4.Text + ", ";
+                var num = -1;
+                Int32.TryParse(textBox4.Text, out num);
+                MessageBox.Show(num.ToString());
+                if (num != -1 && num != 0)
+                {
+                    insertmaster += textBox4.Text + ", ";
+                }
+                else
+                {
+                    insertmaster += "'" + textBox4.Text + "', ";
+                }
             }
             insertmaster += "'" + textBox5.Text + "', ";
             insertmaster += "'" + comboBox2.Text + "', ";
@@ -398,7 +445,16 @@ namespace BeetleBase
             insertmaster += "'" + textBox13.Text + "', ";
             insertmaster += "'" + comboBox6.Text + "', ";
             //            insertmaster += "'" + textBox15.Text + "'); ";
-            insertmaster += "'" + comboBox11.Text + "/" + comboBox12.Text + "/" + comboBox10.Text + "'";
+            if (
+                comboBox10.Text.Trim() == "" &&
+                comboBox11.Text.Trim() == "" &&
+                comboBox12.Text.Trim() == ""
+            ) {
+                insertmaster += " NULL, ";
+            } else {
+                insertmaster += "'" + comboBox11.Text + "/" + comboBox12.Text + "/" + comboBox10.Text + "', ";
+            }
+            insertmaster += (checkBox1.Checked) ? "True" : "False";
             insertmaster += ")";
             try
             {
@@ -424,7 +480,7 @@ namespace BeetleBase
                 form4editenable(false);
                 button4.Enabled = true;
                 button5.Enabled = false;
-                textBox1_KeyUp(null, null);
+                textBox1_KeyUp(null, null, false);
             }
             catch (OleDbException err)
             {
@@ -498,7 +554,7 @@ namespace BeetleBase
                 OleDbDataAdapter deleter = new OleDbDataAdapter();
                 deleter.DeleteCommand = thebigdelete;
                 deleter.DeleteCommand.ExecuteNonQuery();
-                textBox1_KeyUp(null, null);
+                textBox1_KeyUp(null, null, false);
             }
         }
 
@@ -566,5 +622,15 @@ namespace BeetleBase
                 this.speciesLookUpForm.Focus();
             }
        }
+
+        private void label8_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox9_TextChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }

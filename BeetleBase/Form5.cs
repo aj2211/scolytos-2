@@ -84,6 +84,12 @@ namespace BeetleBase
                     this.currenttable = "[Species_table]";
                     this.cn = "speciestable";
                 }
+                else if (e.Node.Name == "collectorMuseum")
+                {
+                    this.cmd = "SELECT * FROM [COLLECTIONS- Drop Down Collector/Museum]";
+                    this.currenttable = "[COLLECTIONS- Drop Down Collector/Museum]";
+                    this.cn = "collectormuseum";
+                }
                 else
                 {
                     return;
@@ -164,12 +170,8 @@ namespace BeetleBase
             dropdown.Fill(dropdowns, "fungus");
             dropdown.SelectCommand.CommandText = "SELECT * FROM [COLLECTIONS- Drop Down Province]";
             dropdown.Fill(dropdowns, "province");
-            try
-            {
-                dropdown.SelectCommand.CommandText = "SELECT * FROM [COLLECTIONS- Drop Down Identifiers]";
-                dropdown.Fill(dropdowns, "identifiers");
-            } catch (OleDbException err)
-            { MessageBox.Show(err.ToString()); }
+            dropdown.SelectCommand.CommandText = "SELECT * FROM [COLLECTIONS- Drop Down Collector/Museum]";
+            dropdown.Fill(dropdowns, "collectormuseum");
             a.comboBox1.Items.Clear();
             a.comboBox2.Items.Clear();
             a.comboBox3.Items.Clear();
@@ -183,7 +185,6 @@ namespace BeetleBase
             int experimentcount = dropdowns.Tables["experiment"].Rows.Count;
             int funguscount = dropdowns.Tables["fungus"].Rows.Count;
             int provincecount = dropdowns.Tables["province"].Rows.Count;
-            int identifierscount = dropdowns.Tables["identifiers"].Rows.Count;
             for (int i = 0; i < capturetypecount; i++)
             {
                 a.comboBox2.Items.Add(dropdowns.Tables["capturetype"].Rows[i][0]);
@@ -195,6 +196,7 @@ namespace BeetleBase
             for (int i = 0; i < collectormuseumcount; i++)
             {
                 a.comboBox6.Items.Add(dropdowns.Tables["collectormuseum"].Rows[i][0]);
+                aa.identifiercombo.Items.Add(dropdowns.Tables["collectormuseum"].Rows[i][0]);
             }
             for (int i = 0; i < experimentcount; i++)
             {
@@ -207,10 +209,6 @@ namespace BeetleBase
             for (int i = 0; i < provincecount; i++)
             {
                 a.comboBox4.Items.Add(dropdowns.Tables["province"].Rows[i][0]);
-            }
-            for (int i = 0; i < identifierscount; i++)
-            {
-                aa.identifiercombo.Items.Add(dropdowns.Tables["identifiers"].Rows[i][0]);
             }
             dropdown.Dispose();
         }
@@ -228,9 +226,9 @@ namespace BeetleBase
                     }
                 }
             }
-            catch (IndexOutOfRangeException)
+            catch (IndexOutOfRangeException a)
             {
-//                MessageBox.Show("a");
+                //                MessageBox.Show("a");
             }
         }
 
@@ -254,7 +252,7 @@ namespace BeetleBase
                     else
                     {
                         deleter = "DELETE FROM [Species_table] WHERE [SpCode] = " + del;
-                        predeleter = "DELETE FROM [SPECIES_IN_COLLECTIONS] WHERE [SpCode] Is Null";
+                        predeleter = "DELETE FROM [SPECIES_IN_COLLECTIONS] WHERE [SpCode] = " + del;
                     }
                     OleDbCommand prefirst = new OleDbCommand(predeleter, this.thefile.dbo);
                     OleDbCommand first = new OleDbCommand(deleter, this.thefile.dbo);
@@ -336,17 +334,17 @@ namespace BeetleBase
                     OleDbCommand first = new OleDbCommand(deleter, this.thefile.dbo);
                     first.ExecuteNonQuery();
                 }
-                else if (this.cn == "identifier")
+                else if (this.cn == "collectormuseum")
                 {
                     var del = dataGridView1.Rows[e.Row.Index].Cells[0].Value.ToString().Trim();
                     string deleter;
                     if (del == "")
                     {
-                        deleter = "DELETE FROM " + this.currenttable + " WHERE [identifier] Is Null";
+                        deleter = "DELETE FROM " + this.currenttable + " WHERE [collector/museum] Is Null";
                     }
                     else
                     {
-                        deleter = "DELETE FROM " + this.currenttable + " WHERE [identifier] = '" + del + "'";
+                        deleter = "DELETE FROM " + this.currenttable + " WHERE [collector/museum] = '" + del + "'";
                     }
                     OleDbCommand first = new OleDbCommand(deleter, this.thefile.dbo);
                     first.ExecuteNonQuery();
@@ -391,9 +389,7 @@ namespace BeetleBase
                     string inserter = "";
                     if (this.cn == "speciestable")
                     {
-                        inserter = "INSERT INTO [Species_table] ([Tribe], [Genus], [species]) VALUES ("
-                        + a.Value.ToString() + ", "
-//                        + dataGridView1.Rows[a.Key].Cells[0].Value.ToString() + ", '"
+                        inserter = "INSERT INTO [Species_table] ([Tribe], [Genus], [species]) VALUES ('"
                         + dataGridView1.Rows[a.Key].Cells[1].Value.ToString() + "', '"
                         + dataGridView1.Rows[a.Key].Cells[2].Value.ToString() + "', '"
                         + dataGridView1.Rows[a.Key].Cells[3].Value.ToString() + "')";
@@ -438,22 +434,28 @@ namespace BeetleBase
                         + dataGridView1.Rows[a.Key].Cells[0].Value.ToString()
                         + "')";
                     }
-                    else if (this.cn == "identifier")
+                    else if (this.cn == "collectormuseum")
                     {
                         inserter = "INSERT INTO "
                         + this.currenttable
-                        + " ([identifier]) VALUES ('"
+                        + " ([collector/museum]) VALUES ('"
                         + dataGridView1.Rows[a.Key].Cells[0].Value.ToString()
                         + "')";
                     }
+  //                  OleDbCommand precmd = new OleDbCommand("INSERT INTO [SPECIES_IN_COLLECTIONS] ([SpCode]) ", this.thefile.dbo);
                     OleDbCommand cmd = new OleDbCommand(inserter, this.thefile.dbo);
                     cmd.ExecuteNonQuery();
                 }
                 catch (OleDbException err)
                 {
-                    err.ToString();
+
                 }
             }
        }
+
+        private void treeView1_AfterSelect(object sender, TreeViewEventArgs e)
+        {
+
+        }
     }
 }

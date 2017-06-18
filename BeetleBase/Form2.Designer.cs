@@ -51,8 +51,6 @@
             this.label9 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
-            this.label5 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
@@ -89,7 +87,13 @@
             this.textBox1.TabIndex = 0;
             this.textBox1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.textBox1_KeyDown);
             this.textBox1.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox1_KeyPress);
-            this.textBox1.KeyUp += new System.Windows.Forms.KeyEventHandler(this.textBox1_KeyUp);
+            //this.textBox1.KeyUp += new System.Windows.Forms.KeyEventHandler(this.textBox1_KeyUp);
+            this.textBox1.KeyUp += new System.Windows.Forms.KeyEventHandler
+            ((a, b) =>
+                {
+                    this.textBox1_KeyUp(a, b, false);
+                }
+            );
             // 
             // label1
             // 
@@ -127,11 +131,11 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(359, 159);
+            this.button2.Location = new System.Drawing.Point(359, 144);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(102, 22);
+            this.button2.Size = new System.Drawing.Size(102, 38);
             this.button2.TabIndex = 0;
-            this.button2.Text = "Save Species";
+            this.button2.Text = "Save Editted Species In Vial";
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
@@ -153,8 +157,6 @@
             this.groupBox1.Controls.Add(this.label9);
             this.groupBox1.Controls.Add(this.label8);
             this.groupBox1.Controls.Add(this.label7);
-            this.groupBox1.Controls.Add(this.checkBox1);
-            this.groupBox1.Controls.Add(this.label5);
             this.groupBox1.Controls.Add(this.label4);
             this.groupBox1.Controls.Add(this.label3);
             this.groupBox1.Controls.Add(this.label2);
@@ -190,9 +192,9 @@
             this.label15.AutoSize = true;
             this.label15.Location = new System.Drawing.Point(109, 143);
             this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(47, 13);
+            this.label15.Size = new System.Drawing.Size(142, 13);
             this.label15.TabIndex = 28;
-            this.label15.Text = "Identifier";
+            this.label15.Text = "Identifier (Collector/Museum)";
             // 
             // identifiercombo
             // 
@@ -404,24 +406,6 @@
             this.label7.TabIndex = 19;
             this.label7.Text = "Species Note";
             // 
-            // checkBox1
-            // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(432, 37);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(15, 14);
-            this.checkBox1.TabIndex = 4;
-            this.checkBox1.UseVisualStyleBackColor = true;
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(395, 15);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(59, 13);
-            this.label5.TabIndex = 16;
-            this.label5.Text = "Pair/Family";
-            // 
             // label4
             // 
             this.label4.AutoSize = true;
@@ -515,7 +499,7 @@
             // 
             // button6
             // 
-            this.button6.Location = new System.Drawing.Point(12, 51);
+            this.button6.Location = new System.Drawing.Point(12, 50);
             this.button6.Name = "button6";
             this.button6.Size = new System.Drawing.Size(75, 35);
             this.button6.TabIndex = 0;
@@ -525,20 +509,20 @@
             // 
             // button7
             // 
-            this.button7.Location = new System.Drawing.Point(12, 91);
+            this.button7.Location = new System.Drawing.Point(12, 88);
             this.button7.Name = "button7";
-            this.button7.Size = new System.Drawing.Size(75, 23);
+            this.button7.Size = new System.Drawing.Size(75, 49);
             this.button7.TabIndex = 0;
-            this.button7.Text = "Save New";
+            this.button7.Text = "Save New Species In Vial";
             this.button7.UseVisualStyleBackColor = true;
             this.button7.Click += new System.EventHandler(this.button7_Click);
             // 
             // button8
             // 
-            this.button8.Location = new System.Drawing.Point(12, 119);
+            this.button8.Location = new System.Drawing.Point(12, 140);
             this.button8.Name = "button8";
             this.button8.Size = new System.Drawing.Size(75, 47);
-            this.button8.TabIndex = 0;
+            this.button8.TabIndex = 100;
             this.button8.Text = "Delete Species In Vial";
             this.button8.UseVisualStyleBackColor = true;
             this.button8.Click += new System.EventHandler(this.button8_Click);
@@ -611,7 +595,7 @@
             // 
             // showVials
             // 
-            this.showVials.Location = new System.Drawing.Point(11, 181);
+            this.showVials.Location = new System.Drawing.Point(12, 190);
             this.showVials.Name = "showVials";
             this.showVials.Size = new System.Drawing.Size(75, 23);
             this.showVials.TabIndex = 13;
@@ -672,8 +656,6 @@
         private System.Windows.Forms.TextBox textBox13;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.CheckBox checkBox1;
-        private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.Label label12;

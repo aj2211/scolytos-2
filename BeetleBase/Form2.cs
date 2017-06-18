@@ -44,7 +44,6 @@ namespace BeetleBase
             this.textBox7.Enabled = set;
             this.textBox8.Enabled = set;
             this.textBox9.Enabled = set;
-            this.checkBox1.Enabled = set;
             this.textBox11.Enabled = set;
             this.textBox13.Enabled = set;
             this.textBox14.Enabled = set;
@@ -61,6 +60,7 @@ namespace BeetleBase
         public void initializeComponent()
         {
             InitializeComponent();
+            this.button1.Focus();
             this.StartPosition = FormStartPosition.Manual;
             this.Location = new System.Drawing.Point(0, 350);
             this.dataGridView1.ReadOnly = true;
@@ -68,7 +68,7 @@ namespace BeetleBase
             this.dataGridView1.Columns[13].Visible = false;
             try
             {
-                string getidentifiers = "SELECT * FROM [COLLECTIONS- Drop Down Identifiers]";
+                string getidentifiers = "SELECT * FROM [COLLECTIONS- Drop Down Collector/Museum]";
                 OleDbCommand getident = new OleDbCommand(getidentifiers, this.thefile.dbo);
                 OleDbDataAdapter idadapt = new OleDbDataAdapter(getident);
                 DataSet iddropdown = new DataSet();
@@ -76,7 +76,7 @@ namespace BeetleBase
                 int identifierscount = iddropdown.Tables["ID"].Rows.Count;
                 for (int i = 0; i < identifierscount; i++)
                 {
-                    string jj = iddropdown.Tables["ID"].Rows[i][1].ToString();
+                    string jj = iddropdown.Tables["ID"].Rows[i][0].ToString();
                     identifiercombo.Items.Add(jj);
                 }
             }
@@ -107,7 +107,7 @@ namespace BeetleBase
 
         public DB thefile;
 
-        public void textBox1_KeyUp(object sender, KeyEventArgs e)
+        public void textBox1_KeyUp(object sender, KeyEventArgs e, bool loop)
         {
             if (itsUnderControl)
             {
@@ -121,10 +121,15 @@ namespace BeetleBase
             richTextBox2.Clear();
             richTextBox3.Clear();
             richTextBox4.Clear();
-            string cmd = "SELECT b.[record], a.[vial], (c.[SpCode] & ' - ' & c.[Genus] & ' ' & c.[Species]) as [Species In Vial], b.[count], b.[male], b.[pair/family], b.[collector/museum], b.[SPECIES_note], b.[borrowed_count], b.[returned_date], b.[loaned_to], b.[loaned_number], b.[from plate], b.[SpCode], b.[PINNED], d.[identifier] FROM ((([COLLECTIONS] a LEFT OUTER JOIN [SPECIES_IN_COLLECTIONS] b ON a.[vial] = b.[vial]) LEFT OUTER JOIN [Species_table] c ON b.[SpCode] = c.[SpCode]) LEFT OUTER JOIN [Identifiers] d on b.[record] = d.[record]) ";
+            string cmd = "SELECT b.[record], a.[vial], (c.[SpCode] & ' - ' & c.[Genus] & ' ' & c.[Species]) as [Species In Vial], b.[count], b.[male], b.[pair/family], b.[collector/museum], b.[SPECIES_note], b.[borrowed_count], b.[returned_date], b.[loaned_to], b.[loaned_number], b.[from plate], b.[SpCode], b.[PINNED] FROM (([COLLECTIONS] a LEFT OUTER JOIN [SPECIES_IN_COLLECTIONS] b ON a.[vial] = b.[vial]) LEFT OUTER JOIN [Species_table] c ON b.[SpCode] = c.[SpCode])";
             if (textBox1.Text.Trim() != "")
             {
                 cmd += "WHERE a.[vial] = " + textBox1.Text;
+                this.vial.textBox1.Text = textBox1.Text;
+                if (!loop)
+                {
+                    this.vial.textBox1_KeyUp(null, null, false);
+                }
             }
             OleDbCommand vialsearch = new OleDbCommand(cmd, this.thefile.dbo);
             OleDbDataAdapter vialadapter = new OleDbDataAdapter(vialsearch);
@@ -184,14 +189,6 @@ namespace BeetleBase
             textBox11.Text = col[4].Value.ToString();
 //            textBox3.Text = col[6].Value.ToString();
             textBox4.Text = col[7].Value.ToString();
-            if (col[5].Value.ToString() == "True")
-            {
-                checkBox1.Checked = true;
-            }
-            else
-            {
-                checkBox1.Checked = false;
-            }
 //            e.ToString();
             textBox5.Text = col[8].Value.ToString();
 
@@ -214,7 +211,7 @@ namespace BeetleBase
             {
                 pinnedbox.Checked = false;
             }
-            identifiercombo.Text = col[15].Value.ToString();
+            identifiercombo.Text = col[6].Value.ToString();
         }
 
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
@@ -255,7 +252,6 @@ namespace BeetleBase
             textBox2.Text = "";
             textBox8.Text = "";
             textBox9.Text = "";
-            checkBox1.Checked = false;
             textBox11.Text = "";
 //            textBox3.Text = "";
             textBox4.Text = "";
@@ -281,13 +277,21 @@ namespace BeetleBase
                 this.thefile.dbo.Open();
             }
             string updatemaster = "UPDATE [SPECIES_IN_COLLECTIONS] SET ";
+            if (textBox8.Text.Trim() == "")
+            {
+
+            }
+            else
+            {
+                updatemaster += " [vial] = " + textBox8.Text;
+            }
             if (textBox2.Text == "")
             {
                 //                updatemaster += ", [SpCode] = null";
             }
             else
             {
-                updatemaster += " [SpCode] = " + textBox2.Text;
+                updatemaster += ", [SpCode] = " + textBox2.Text;
             }
             if (textBox9.Text == "")
             {
@@ -296,14 +300,6 @@ namespace BeetleBase
             else
             {
                 updatemaster += ", [Count] = " + textBox9.Text;
-            }
-            if (checkBox1.Checked)
-            {
-                updatemaster += ", [pair/family] = True";
-            }
-            else
-            {
-                updatemaster += ", [pair/family] = False";
             }
             if (textBox11.Text == "")
             {
@@ -360,14 +356,8 @@ namespace BeetleBase
             try
             {
                 updatemaster += " WHERE record = " + currentrecord;
-                string checkidentifiercommand = "SELECT DCount(' * ', 'Identifiers', '[record] = " + currentrecord + "')";
-                OleDbCommand checkidentifier = new OleDbCommand(checkidentifiercommand, this.thefile.dbo);
-                OleDbDataAdapter check = new OleDbDataAdapter(checkidentifier);
-                DataSet checke = new DataSet();
-                check.Fill(checke, "record");
 
-
-                string updatemaster2 = "UPDATE [Identifiers] SET [identifier] = '" + identifiercombo.Text + "' WHERE [record] = " + currentrecord;
+                string updatemaster2 = "UPDATE [SPECIES_IN_COLLECTIONS] SET [identifier] = '" + identifiercombo.Text + "' WHERE [record] = " + currentrecord;
                 try
                 {
                     OleDbCommand up = new OleDbCommand(updatemaster, this.thefile.dbo);
@@ -380,37 +370,9 @@ namespace BeetleBase
                     //                MessageBox.Show("Unable to write Species to Vial. Check to make sure information is valid!");
 //                    MessageBox.Show(updatemaster);
                 }
-
-                if (checke.Tables[0].Rows[0][0].ToString() == "0")
-                {
-                    try
-                    {
-                        string insertcommand = "INSERT INTO [Identifiers] ([record], [identifier]) VALUES (" + currentrecord + ", '" + this.identifiercombo.Text + "')";
-                        OleDbCommand insert = new OleDbCommand(insertcommand, this.thefile.dbo);
-                        insert.ExecuteNonQuery();
-                    }
-                    catch (OleDbException err)
-                    {
-                        MessageBox.Show(err.ToString());
-                    }
-                }
-                else
-                {
-                    try
-                    {
-                        OleDbCommand up = new OleDbCommand(updatemaster2, this.thefile.dbo);
-                        OleDbDataAdapter upd = new OleDbDataAdapter();
-                        upd.UpdateCommand = up;
-                        upd.UpdateCommand.ExecuteNonQuery();
-                    }
-                    catch (OleDbException)
-                    {
-                        MessageBox.Show("Unable to write Identifier. Check to make sure information is valid!");
-                    }
-                }
             }
             catch (OleDbException err) { MessageBox.Show(err.ToString()); return; }
-            textBox1_KeyUp(null, null);
+            textBox1_KeyUp(null, null, false);
             button3_Click(null, null);
             form2editenable(false);
         }
@@ -508,7 +470,7 @@ namespace BeetleBase
             this.currentvial = col[1].Value.ToString();
             this.textBox8.Text = this.currentvial;
             this.currentrecord = col[0].Value.ToString();
-            this.textBox8.ReadOnly = true;
+            this.textBox8.ReadOnly = false;
             form2editenable(true);
             button8.Enabled = false;
             button2.Enabled = false;
@@ -534,16 +496,6 @@ namespace BeetleBase
             {
                 insertmaster += ", [count]";
                 insertmaster2 += ", " + textBox9.Text;
-            }
-            if (checkBox1.Checked)
-            {
-                insertmaster += ", [pair/family]";
-                insertmaster2 += ", True";
-            }
-            else
-            {
-                insertmaster += ", [pair/family]";
-                insertmaster2 += ", False";
             }
             if (textBox11.Text != "" && textBox11.Text != " " && textBox11.Text != "  ")
             {
@@ -585,6 +537,11 @@ namespace BeetleBase
                 insertmaster += ", [from plate]";
                 insertmaster2 += ", " + textBox13.Text;
             }
+            if (identifiercombo.Text.Trim() != "")
+            {
+                insertmaster += ", [identifier]";
+                insertmaster2 += ", '" + identifiercombo.Text + "'";
+            }
             if (pinnedbox.Checked)
             {
                 insertmaster += ", [PINNED]";
@@ -606,16 +563,10 @@ namespace BeetleBase
                 OleDbDataAdapter inserter = new OleDbDataAdapter();
                 inserter.InsertCommand = thebiginsert;
                 inserter.InsertCommand.ExecuteNonQuery();
-                string idcommand = "SELECT @@IDENTITY";
-                OleDbCommand lastinsertedid = new OleDbCommand(idcommand, this.thefile.dbo);
-                OleDbDataAdapter selector = new OleDbDataAdapter(lastinsertedid);
-                DataSet id = new DataSet();
-                selector.Fill(id, "ID");
-                string lastid = id.Tables["ID"].Rows[0][0].ToString();
-                string finalinsertcommand = "INSERT INTO [Identifiers] ([record], [identifier]) VALUES (" + lastid + ", '" + identifiercombo.Text + "')";
-                OleDbCommand finalinsert = new OleDbCommand(finalinsertcommand, this.thefile.dbo);
-                inserter.InsertCommand = finalinsert;
-                inserter.InsertCommand.ExecuteNonQuery();
+//                string finalinsertcommand = "INSERT INTO [Identifiers] ([record], [identifier]) VALUES (" + lastid + ", '" + identifiercombo.Text + "')";
+//                OleDbCommand finalinsert = new OleDbCommand(finalinsertcommand, this.thefile.dbo);
+//                inserter.InsertCommand = finalinsert;
+//                inserter.InsertCommand.ExecuteNonQuery();
                 textBox1.Text = this.currentvial;
                 this.vial.textBox1.Text = this.currentvial;
                 button3_Click(null, null);
@@ -624,7 +575,7 @@ namespace BeetleBase
                 //                button5.Enabled = true;
                 button6.Enabled = true;
                 button7.Enabled = false;
-                this.textBox1_KeyUp(null, null);
+                this.textBox1_KeyUp(null, null, false);
             }
             catch (OleDbException err)
             {
@@ -690,11 +641,7 @@ namespace BeetleBase
                     OleDbDataAdapter deleter = new OleDbDataAdapter();
                     deleter.DeleteCommand = thebigdelete;
                     deleter.DeleteCommand.ExecuteNonQuery();
-                    string nextdeleter = "DELETE FROM [Identifiers] WHERE [record] = " + todelete;
-                    OleDbCommand nextdelete = new OleDbCommand(nextdeleter, this.thefile.dbo);
-                    deleter.DeleteCommand = nextdelete;
-                    deleter.DeleteCommand.ExecuteNonQuery();
-                    textBox1_KeyUp(null, null);
+                    textBox1_KeyUp(null, null, false);
                 }
                 catch (OleDbException err)
                 {
@@ -754,7 +701,8 @@ namespace BeetleBase
                     try
                     {
                     */
-                    string cmd = "SELECT * FROM [Images] WHERE [SpCode] = " + editted[0].Cells[13].Value.ToString() + " ORDER BY [code] ASC";
+                    string cmd = "SELECT [ImagePath] FROM [Images] WHERE [SpCode] = " + editted[0].Cells[13].Value.ToString() + " ORDER BY [SpCode] ASC";
+//                    MessageBox.Show(cmd);
                     OleDbCommand test = new OleDbCommand(cmd, this.thefile.dbo);
                     OleDbDataAdapter begin = new OleDbDataAdapter(test);
                     this.dataset = new DataSet();
@@ -762,9 +710,10 @@ namespace BeetleBase
                     begin.Dispose();
                     if (this.dataset.Tables[0].Rows.Count > 0)
                     {
-                        string a = this.dataset.Tables[0].Rows[0][2].ToString();
+                        string a = this.dataset.Tables[0].Rows[0][0].ToString();
                         string str = this.thefile.root + @"\" + a;
                         //                        File.Open(@"C:\temp\Scol023.jpg", FileMode.Open);
+                        // MessageBox.Show(a);
                         if (File.Exists(@str))
                         {
                             this.pictureBox1.Image = Image.FromFile(@str);
@@ -839,7 +788,7 @@ namespace BeetleBase
         {
             if (this.textBox1.Text.ToString().Trim() != "")
             {
-                this.textBox1_KeyUp(null, null);
+                this.textBox1_KeyUp(null, null, false);
             }
             if (this.editting)
             {
@@ -847,7 +796,7 @@ namespace BeetleBase
             }
             if (this.vial.textBox1.Text.ToString().Trim() != "")
             {
-                this.vial.textBox1_KeyUp(null, null);
+                this.vial.textBox1_KeyUp(null, null, true);
             }
             if (this.vial.editting)
             {

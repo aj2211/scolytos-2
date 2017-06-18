@@ -9,12 +9,12 @@ C:\Users\John\Documents\Visual Studio 2015\Projects\BeetleBase\BeetleBase\obj\De
 C:\Users\John\documents\visual studio 2015\Projects\BeetleBase\BeetleBase\obj\Debug\BeetleBase.csprojResolveAssemblyReference.cache
 C:\Users\John\documents\visual studio 2015\Projects\BeetleBase\BeetleBase\obj\Debug\Scolytos2.Form8.resources
 C:\Users\John\documents\visual studio 2015\Projects\BeetleBase\BeetleBase\obj\Debug\Scolytos2.speciesLookUpForm.resources
-C:\Users\John\documents\visual studio 2015\Projects\BeetleBase\BeetleBase\bin\Debug\Scolytos 2 v2.0.0.exe.config
-C:\Users\John\documents\visual studio 2015\Projects\BeetleBase\BeetleBase\bin\Debug\Scolytos 2 v2.0.0.exe.manifest
-C:\Users\John\documents\visual studio 2015\Projects\BeetleBase\BeetleBase\bin\Debug\Scolytos 2 v2.0.0.application
-C:\Users\John\documents\visual studio 2015\Projects\BeetleBase\BeetleBase\bin\Debug\Scolytos 2 v2.0.0.exe
-C:\Users\John\documents\visual studio 2015\Projects\BeetleBase\BeetleBase\bin\Debug\Scolytos 2 v2.0.0.pdb
-C:\Users\John\documents\visual studio 2015\Projects\BeetleBase\BeetleBase\obj\Debug\Scolytos 2 v2.0.0.exe.manifest
-C:\Users\John\documents\visual studio 2015\Projects\BeetleBase\BeetleBase\obj\Debug\Scolytos 2 v2.0.0.application
-C:\Users\John\documents\visual studio 2015\Projects\BeetleBase\BeetleBase\obj\Debug\Scolytos 2 v2.0.0.exe
-C:\Users\John\documents\visual studio 2015\Projects\BeetleBase\BeetleBase\obj\Debug\Scolytos 2 v2.0.0.pdb
+C:\Users\John\documents\visual studio 2015\Projects\BeetleBase\BeetleBase\bin\Debug\Scolytos 2 v2.3.1.exe.config
+C:\Users\John\documents\visual studio 2015\Projects\BeetleBase\BeetleBase\bin\Debug\Scolytos 2 v2.3.1.exe.manifest
+C:\Users\John\documents\visual studio 2015\Projects\BeetleBase\BeetleBase\bin\Debug\Scolytos 2 v2.3.1.application
+C:\Users\John\documents\visual studio 2015\Projects\BeetleBase\BeetleBase\bin\Debug\Scolytos 2 v2.3.1.exe
+C:\Users\John\documents\visual studio 2015\Projects\BeetleBase\BeetleBase\bin\Debug\Scolytos 2 v2.3.1.pdb
+C:\Users\John\documents\visual studio 2015\Projects\BeetleBase\BeetleBase\obj\Debug\Scolytos 2 v2.3.1.exe.manifest
+C:\Users\John\documents\visual studio 2015\Projects\BeetleBase\BeetleBase\obj\Debug\Scolytos 2 v2.3.1.application
+C:\Users\John\documents\visual studio 2015\Projects\BeetleBase\BeetleBase\obj\Debug\Scolytos 2 v2.3.1.exe
+C:\Users\John\documents\visual studio 2015\Projects\BeetleBase\BeetleBase\obj\Debug\Scolytos 2 v2.3.1.pdb
