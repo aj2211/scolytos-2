@@ -1,0 +1,20 @@
+C:\Users\John\documents\visual studio 2015\Projects\BeetleBase\BeetleBase\bin\x64\Debug\Scolytos 2 v2.5.0.exe.config
+C:\Users\John\documents\visual studio 2015\Projects\BeetleBase\BeetleBase\bin\x64\Debug\Scolytos 2 v2.5.0.exe.manifest
+C:\Users\John\documents\visual studio 2015\Projects\BeetleBase\BeetleBase\bin\x64\Debug\Scolytos 2 v2.5.0.application
+C:\Users\John\documents\visual studio 2015\Projects\BeetleBase\BeetleBase\bin\x64\Debug\Scolytos 2 v2.5.0.exe
+C:\Users\John\documents\visual studio 2015\Projects\BeetleBase\BeetleBase\bin\x64\Debug\Scolytos 2 v2.5.0.pdb
+C:\Users\John\documents\visual studio 2015\Projects\BeetleBase\BeetleBase\obj\x64\Debug\BeetleBase.csprojResolveAssemblyReference.cache
+C:\Users\John\documents\visual studio 2015\Projects\BeetleBase\BeetleBase\obj\x64\Debug\BeetleBase.Form1.resources
+C:\Users\John\documents\visual studio 2015\Projects\BeetleBase\BeetleBase\obj\x64\Debug\BeetleBase.Form2.resources
+C:\Users\John\documents\visual studio 2015\Projects\BeetleBase\BeetleBase\obj\x64\Debug\BeetleBase.Form3.resources
+C:\Users\John\documents\visual studio 2015\Projects\BeetleBase\BeetleBase\obj\x64\Debug\BeetleBase.Form4.resources
+C:\Users\John\documents\visual studio 2015\Projects\BeetleBase\BeetleBase\obj\x64\Debug\BeetleBase.Form5.resources
+C:\Users\John\documents\visual studio 2015\Projects\BeetleBase\BeetleBase\obj\x64\Debug\BeetleBase.Form6.resources
+C:\Users\John\documents\visual studio 2015\Projects\BeetleBase\BeetleBase\obj\x64\Debug\Scolytos2.Form8.resources
+C:\Users\John\documents\visual studio 2015\Projects\BeetleBase\BeetleBase\obj\x64\Debug\Scolytos2.speciesLookUpForm.resources
+C:\Users\John\documents\visual studio 2015\Projects\BeetleBase\BeetleBase\obj\x64\Debug\Scolytos2.Properties.Resources.resources
+C:\Users\John\documents\visual studio 2015\Projects\BeetleBase\BeetleBase\obj\x64\Debug\BeetleBase.csproj.GenerateResource.Cache
+C:\Users\John\documents\visual studio 2015\Projects\BeetleBase\BeetleBase\obj\x64\Debug\Scolytos 2 v2.5.0.exe.manifest
+C:\Users\John\documents\visual studio 2015\Projects\BeetleBase\BeetleBase\obj\x64\Debug\Scolytos 2 v2.5.0.application
+C:\Users\John\documents\visual studio 2015\Projects\BeetleBase\BeetleBase\obj\x64\Debug\Scolytos 2 v2.5.0.exe
+C:\Users\John\documents\visual studio 2015\Projects\BeetleBase\BeetleBase\obj\x64\Debug\Scolytos 2 v2.5.0.pdb
