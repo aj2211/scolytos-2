@@ -62,7 +62,7 @@ namespace BeetleBase
                 OleDbDataAdapter begin = new OleDbDataAdapter(test);
                 begin.Fill(this.thefile.main);
                 begin.Dispose();
-                OleDbCommand test2 = new OleDbCommand("SELECT TOP 10 * FROM [COLLECTIONS]", this.thefile.dbo);
+                OleDbCommand test2 = new OleDbCommand("SELECT TOP 10 COLLECTIONS.vial, COLLECTIONS.experiment, COLLECTIONS.field_vial, COLLECTIONS.host_or_trap, COLLECTIONS.[capture->storage], COLLECTIONS.fungus, COLLECTIONS.Country, COLLECTIONS.province, COLLECTIONS.county, COLLECTIONS.locality, COLLECTIONS.date, COLLECTIONS.VIAL_note, COLLECTIONS.[collector/museum], COLLECTIONS.[pair/family], COLLECTIONS.date_collected FROM [COLLECTIONS]", this.thefile.dbo);
                 OleDbDataAdapter begin2 = new OleDbDataAdapter(test2);
                 begin2.Fill(this.thefile.main2);
                 begin2.Dispose();

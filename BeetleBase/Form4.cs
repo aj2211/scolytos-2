@@ -122,10 +122,10 @@ namespace BeetleBase
             {
                 return;
             }
-            string cmd = "SELECT * FROM [COLLECTIONS] WHERE vial Is Not Null";
+            string cmd = "SELECT COLLECTIONS.vial, COLLECTIONS.experiment, COLLECTIONS.field_vial, COLLECTIONS.host_or_trap, COLLECTIONS.[capture->storage], COLLECTIONS.fungus, COLLECTIONS.Country, COLLECTIONS.province, COLLECTIONS.county, COLLECTIONS.locality, COLLECTIONS.date, COLLECTIONS.VIAL_note, COLLECTIONS.[collector/museum], COLLECTIONS.[pair/family], COLLECTIONS.date_collected FROM [COLLECTIONS] WHERE vial Is Not Null";
             if (textBox1.Text.Trim() != "")
             {
-                cmd = "SELECT * FROM [COLLECTIONS] WHERE vial = " + textBox1.Text;
+                cmd = "SELECT COLLECTIONS.vial, COLLECTIONS.experiment, COLLECTIONS.field_vial, COLLECTIONS.host_or_trap, COLLECTIONS.[capture->storage], COLLECTIONS.fungus, COLLECTIONS.Country, COLLECTIONS.province, COLLECTIONS.county, COLLECTIONS.locality, COLLECTIONS.date, COLLECTIONS.VIAL_note, COLLECTIONS.[collector/museum], COLLECTIONS.[pair/family], COLLECTIONS.date_collected FROM [COLLECTIONS] WHERE vial =" + textBox1.Text;
                 aa.textBox1.Text = textBox1.Text;
                 if (!loop)
                 {
@@ -143,7 +143,7 @@ namespace BeetleBase
 
         public void textBox1_KeyUp2(object sender, KeyEventArgs e)
         {
-            string cmd = "SELECT * FROM [COLLECTIONS] WHERE vial = " + textBox1.Text + "";
+            string cmd = "SELECT COLLECTIONS.vial, COLLECTIONS.experiment, COLLECTIONS.field_vial, COLLECTIONS.host_or_trap, COLLECTIONS.[capture->storage], COLLECTIONS.fungus, COLLECTIONS.Country, COLLECTIONS.province, COLLECTIONS.county, COLLECTIONS.locality, COLLECTIONS.date, COLLECTIONS.VIAL_note, COLLECTIONS.[collector/museum], COLLECTIONS.[pair/family], COLLECTIONS.date_collected FROM [COLLECTIONS] WHERE vial =" + textBox1.Text + "";
             OleDbCommand vialsearch = new OleDbCommand(cmd, this.thefile.dbo);
             OleDbDataAdapter vialadapter = new OleDbDataAdapter(vialsearch);
             DataSet vials = new DataSet();
@@ -152,9 +152,12 @@ namespace BeetleBase
             vialadapter.Dispose();
         }
 
+        // Button 1 is to edit the vial.
+
         public void button1_Click(object sender, EventArgs e)
         {
             this.editting = true;
+            this.button4.Enabled = false;
             DataGridViewSelectedRowCollection editted;
             DataGridViewCellCollection col;
             if (this.dataGridView1.SelectedCells.Count == 0 && this.dataGridView1.SelectedRows.Count == 0)
@@ -216,10 +219,10 @@ namespace BeetleBase
             textBox5.Text = col[3].Value.ToString();
             comboBox2.Text = col[4].Value.ToString();
             comboBox3.Text = col[5].Value.ToString();
-            textBox8.Text = col[6].Value.ToString();
-            textBox9.Text = col[7].Value.ToString();
-            comboBox4.Text = col[8].Value.ToString();
-            comboBox5.Text = col[9].Value.ToString();
+            textBox8.Text = col[9].Value.ToString();
+            textBox9.Text = col[8].Value.ToString();
+            comboBox4.Text = col[7].Value.ToString();
+            comboBox5.Text = col[6].Value.ToString();
             if (col[14].Value.ToString() == "True")
             {
                 checkBox1.Checked = true;
@@ -246,8 +249,18 @@ namespace BeetleBase
                 comboBox11.Text = words2[0];
                 comboBox12.Text = words2[1];
             }
+            // Added AJJ 2017-06-21
+            comboBox6.Text = col[12].Value.ToString();
+            if (col[14].Value.ToString().Length == 10)
+            {
+                comboBox10.Text = col[14].Value.ToString().Substring(0,4);
+                comboBox11.Text = col[14].Value.ToString().Substring(5,2);
+                comboBox12.Text = col[14].Value.ToString().Substring(8,2);
+            }
+   
         }
 
+        // Not sure what this is for?
         private void comboBox3_SelectedIndexChanged(object sender, EventArgs e)
         {
 
@@ -256,6 +269,8 @@ namespace BeetleBase
         public string currentvial;
         public bool editting = false;
         public bool itsUnderControl;
+        //  Note, this is the start of the update (ie click save edited vial)
+        //  ...
         private void button2_Click(object sender, EventArgs e)
         {
             this.editting = false;
@@ -266,14 +281,15 @@ namespace BeetleBase
             string updatemaster = "UPDATE [COLLECTIONS] SET ";
             // updatemaster += " [vial] = (MAX([vial]) + 1), ";
             updatemaster += " [experiment] = '" + comboBox1.Text + "'";
-            if (textBox4.Text == "")
-            {
-                //                updatemaster += ", [Count] = null";
-            }
-            else
-            {
-                updatemaster += ", [field_vial] = " + textBox4.Text;
-            }
+            //if (textBox4.Text == "")
+            //{
+            //    //                updatemaster += ", [Count] = null";
+            //}
+            //else
+            //{
+            //    updatemaster += ", [field_vial] = " + textBox4.Text;
+            //}
+            updatemaster += ", [field_vial] = '" + textBox4.Text + "'";
             updatemaster += ", [host_or_trap] = '" + textBox5.Text + "'";
             updatemaster += ", [capture->storage] = '" + comboBox2.Text + "'";
             updatemaster += ", [fungus] = '" + comboBox3.Text + "'";
@@ -306,6 +322,27 @@ namespace BeetleBase
             }
             updatemaster += ", [VIAL_note] = '" + textBox13.Text + "'";
             updatemaster += ", [collector/museum] = '" + comboBox6.Text + "'";
+            if
+                (
+                comboBox10.Text == ""
+                )
+            {
+                comboBox10.Text = "????";
+            }
+            if
+                (
+                comboBox11.Text == ""
+                )
+            {
+                comboBox11.Text = "??";
+            }  
+            if
+                (
+                comboBox12.Text == ""
+                )
+            {
+                comboBox12.Text = "??";
+            }            
             if 
                 (
                 comboBox11.Text != "" 
@@ -319,7 +356,7 @@ namespace BeetleBase
                 && comboBox10.Text != "  "
                 )
             {
-                updatemaster += ", [date collected] = '" + comboBox11.Text + "/" + comboBox12.Text + "/" + comboBox10.Text + "'";
+                updatemaster += ", [date_collected] = '" + comboBox10.Text + "-" + comboBox11.Text + "-" + comboBox12.Text + "'";
             }
             updatemaster += " WHERE vial = " + this.currentvial;
             try
@@ -413,26 +450,27 @@ namespace BeetleBase
             getNextHighest.Fill(nextHighest, "next");
             var next = Int32.Parse(nextHighest.Tables["next"].Rows[0][0].ToString());
             string insertmaster = "INSERT INTO [COLLECTIONS] ([vial], [experiment],";
-            if (textBox4.Text != "" && textBox4.Text != " " && textBox4.Text != "  ")
-            {
-                insertmaster += " [field_vial],";
-            }
-            insertmaster += "[host_or_trap], [capture->storage], [fungus], [locality], [county], [province], [country], [date], [VIAL_note], [collector/museum], [date collected], [pair/family]) VALUES (";
+            //            if (textBox4.Text != "" && textBox4.Text != " " && textBox4.Text != "  ")
+            //            {
+            //                insertmaster += " [field_vial],";
+            //            }
+            insertmaster += " [field_vial], [host_or_trap], [capture->storage], [fungus], [locality], [county], [province], [country], [date], [VIAL_note], [collector/museum], [date_collected], [pair/family]) VALUES (";
             insertmaster += next + ", '" + comboBox1.Text + "', ";
-            if (textBox4.Text != "" && textBox4.Text != " " && textBox4.Text != "  ")
-            {
-                var num = -1;
-                Int32.TryParse(textBox4.Text, out num);
-                MessageBox.Show(num.ToString());
-                if (num != -1 && num != 0)
-                {
-                    insertmaster += textBox4.Text + ", ";
-                }
-                else
-                {
-                    insertmaster += "'" + textBox4.Text + "', ";
-                }
-            }
+            //            if (textBox4.Text != "" && textBox4.Text != " " && textBox4.Text != "  ")
+            //            {
+            //                var num = -1;
+            //                Int32.TryParse(textBox4.Text, out num);
+            //                MessageBox.Show(num.ToString());
+            //                if (num != -1 && num != 0)
+            //                {
+            //                    insertmaster += textBox4.Text + ", ";
+            //                }
+            //                else
+            //                {
+            //                    insertmaster += "'" + textBox4.Text + "', ";
+            //                }
+            //            }
+            insertmaster += "'" + textBox4.Text + "', ";
             insertmaster += "'" + textBox5.Text + "', ";
             insertmaster += "'" + comboBox2.Text + "', ";
             insertmaster += "'" + comboBox3.Text + "', ";
@@ -445,6 +483,27 @@ namespace BeetleBase
             insertmaster += "'" + textBox13.Text + "', ";
             insertmaster += "'" + comboBox6.Text + "', ";
             //            insertmaster += "'" + textBox15.Text + "'); ";
+            if
+                (
+                comboBox10.Text == ""
+                )
+            {
+                comboBox10.Text = "????";
+            }
+            if
+                (
+                comboBox11.Text == ""
+                )
+            {
+                comboBox11.Text = "??";
+            }  
+            if
+                (
+                comboBox12.Text == ""
+                )
+            {
+                comboBox12.Text = "??";
+            }  
             if (
                 comboBox10.Text.Trim() == "" &&
                 comboBox11.Text.Trim() == "" &&
@@ -452,7 +511,7 @@ namespace BeetleBase
             ) {
                 insertmaster += " NULL, ";
             } else {
-                insertmaster += "'" + comboBox11.Text + "/" + comboBox12.Text + "/" + comboBox10.Text + "', ";
+                insertmaster += "'" + comboBox10.Text + "-" + comboBox11.Text + "-" + comboBox12.Text + "', ";
             }
             insertmaster += (checkBox1.Checked) ? "True" : "False";
             insertmaster += ")";
@@ -506,7 +565,7 @@ namespace BeetleBase
         {
             if (MessageBox.Show("Are you sure you want to delete vial?", "Delete Vial",
     MessageBoxButtons.YesNo, MessageBoxIcon.Question,
-    MessageBoxDefaultButton.Button1) != DialogResult.Yes)
+    MessageBoxDefaultButton.Button2) != DialogResult.Yes)
             {
                 return;
             }
@@ -592,7 +651,7 @@ namespace BeetleBase
                 Application.Exit();
             }
         }
-
+        
         private void showSpecies_Click(object sender, EventArgs e)
         {
             if (this.aa.Visible)

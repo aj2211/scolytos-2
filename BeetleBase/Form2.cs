@@ -596,7 +596,7 @@ namespace BeetleBase
         {
             if (MessageBox.Show("Are you sure you want to delete species in vial?", "Delete Species In Vial",
     MessageBoxButtons.YesNo, MessageBoxIcon.Question,
-    MessageBoxDefaultButton.Button1) != DialogResult.Yes)
+    MessageBoxDefaultButton.Button2) != DialogResult.Yes)
             {
                 return;
             }
