@@ -46,6 +46,7 @@
             this.label1.Size = new System.Drawing.Size(263, 13);
             this.label1.TabIndex = 0;
             this.label1.Text = "Chose the Database File for Viewing/Editing/Updating";
+            this.label1.Click += new System.EventHandler(this.label1_Click);
             // 
             // textBox1
             // 

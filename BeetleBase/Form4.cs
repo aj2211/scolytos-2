@@ -22,9 +22,9 @@ namespace BeetleBase
             this.comboBox4.Enabled = a;
             this.comboBox5.Enabled = a;
             this.comboBox6.Enabled = a;
-            this.textBox4.Enabled = a;
-            this.textBox5.Enabled = a;
-            this.textBox8.Enabled = a;
+            this.fieldVialTextBox4.Enabled = a;
+            this.hostTrapTextBox5.Enabled = a;
+            this.localityTextBox8.Enabled = a;
             this.textBox9.Enabled = a;
             this.comboBox7.Enabled = false;
             this.comboBox8.Enabled = false;
@@ -53,7 +53,22 @@ namespace BeetleBase
             this.StartPosition = FormStartPosition.Manual;
             this.Location = new System.Drawing.Point(0, 0);
             this.button5.Enabled = false;
-            this.dataGridView1.DataSource = this.thefile.main2.Tables[0];
+            this.dataGridView1.DataSource = this.thefile.main2.Tables[0];        
+            this.dataGridView1.Columns[0].Width = 40;
+            this.dataGridView1.Columns[1].Width = 80;
+            this.dataGridView1.Columns[2].Width = 40;
+            this.dataGridView1.Columns[3].Width = 100;
+            this.dataGridView1.Columns[4].Width = 108;
+            this.dataGridView1.Columns[5].Width = 70;
+            this.dataGridView1.Columns[6].Width = 70;
+            this.dataGridView1.Columns[7].Width = 70;
+            this.dataGridView1.Columns[8].Width = 70;
+            this.dataGridView1.Columns[9].Width = 70;
+            this.dataGridView1.Columns[10].Width = 50;
+            this.dataGridView1.Columns[11].Width = 150;            
+            this.dataGridView1.Columns[12].Width = 70;
+            this.dataGridView1.Columns[13].Width = 70;
+            this.dataGridView1.Columns[14].Width = 70;
             DataSet dropdowns = new DataSet();
             OleDbCommand first = new OleDbCommand("SELECT * FROM [COLLECTIONS- Drop Down Capture Type]", this.thefile.dbo);
             OleDbDataAdapter dropdown = new OleDbDataAdapter(first);
@@ -215,11 +230,11 @@ namespace BeetleBase
             groupBox1.Text = "Edit Vial " + col[0].Value.ToString();
             this.currentvial = col[0].Value.ToString();
             comboBox1.Text = col[1].Value.ToString();
-            textBox4.Text = col[2].Value.ToString();
-            textBox5.Text = col[3].Value.ToString();
+            fieldVialTextBox4.Text = col[2].Value.ToString();
+            hostTrapTextBox5.Text = col[3].Value.ToString();
             comboBox2.Text = col[4].Value.ToString();
             comboBox3.Text = col[5].Value.ToString();
-            textBox8.Text = col[9].Value.ToString();
+            localityTextBox8.Text = col[9].Value.ToString();
             textBox9.Text = col[8].Value.ToString();
             comboBox4.Text = col[7].Value.ToString();
             comboBox5.Text = col[6].Value.ToString();
@@ -281,19 +296,19 @@ namespace BeetleBase
             string updatemaster = "UPDATE [COLLECTIONS] SET ";
             // updatemaster += " [vial] = (MAX([vial]) + 1), ";
             updatemaster += " [experiment] = '" + comboBox1.Text + "'";
-            //if (textBox4.Text == "")
+            //if (fieldVialTextBox4.Text == "")
             //{
             //    //                updatemaster += ", [Count] = null";
             //}
             //else
             //{
-            //    updatemaster += ", [field_vial] = " + textBox4.Text;
+            //    updatemaster += ", [field_vial] = " + fieldVialTextBox4.Text;
             //}
-            updatemaster += ", [field_vial] = '" + textBox4.Text + "'";
-            updatemaster += ", [host_or_trap] = '" + textBox5.Text + "'";
+            updatemaster += ", [field_vial] = '" + fieldVialTextBox4.Text + "'";
+            updatemaster += ", [host_or_trap] = '" + hostTrapTextBox5.Text + "'";
             updatemaster += ", [capture->storage] = '" + comboBox2.Text + "'";
             updatemaster += ", [fungus] = '" + comboBox3.Text + "'";
-            updatemaster += ", [locality] = '" + textBox8.Text + "'";
+            updatemaster += ", [locality] = '" + localityTextBox8.Text + "'";
             updatemaster += ", [county] = '" + textBox9.Text + "'";
             updatemaster += ", [province] = '" + comboBox4.Text + "'";
             updatemaster += ", [country] = '" + comboBox5.Text + "'";
@@ -382,14 +397,14 @@ namespace BeetleBase
         {
             this.editting = false;
             this.comboBox1.Text = "";
-            this.textBox4.Text = "";
-            this.textBox5.Text = "";
+            this.fieldVialTextBox4.Text = "";
+            this.hostTrapTextBox5.Text = "";
             this.comboBox2.Text = "";
             this.comboBox3.Text = "";
             this.comboBox4.Text = "";
             this.comboBox5.Text = "";
             this.comboBox6.Text = "";
-            this.textBox8.Text = "";
+            this.localityTextBox8.Text = "";
             this.textBox9.Text = "";
             this.comboBox7.Text = "";
             this.comboBox8.Text = "";
@@ -406,15 +421,16 @@ namespace BeetleBase
 
         public void button4_Click(object sender, EventArgs e)
         {
+            this.textBox1.Text = "...";
             this.comboBox1.Text = "";
-            this.textBox4.Text = "";
-            this.textBox5.Text = "";
+            this.fieldVialTextBox4.Text = "";
+            this.hostTrapTextBox5.Text = "";
             this.comboBox2.Text = "";
             this.comboBox3.Text = "no";
             this.comboBox4.Text = "";
             this.comboBox5.Text = "";
             this.comboBox6.Text = "";
-            this.textBox8.Text = "";
+            this.localityTextBox8.Text = "";
             this.textBox9.Text = "";
             this.comboBox7.Text = "";
             this.comboBox8.Text = "";
@@ -450,31 +466,31 @@ namespace BeetleBase
             getNextHighest.Fill(nextHighest, "next");
             var next = Int32.Parse(nextHighest.Tables["next"].Rows[0][0].ToString());
             string insertmaster = "INSERT INTO [COLLECTIONS] ([vial], [experiment],";
-            //            if (textBox4.Text != "" && textBox4.Text != " " && textBox4.Text != "  ")
+            //            if (fieldVialTextBox4.Text != "" && fieldVialTextBox4.Text != " " && fieldVialTextBox4.Text != "  ")
             //            {
             //                insertmaster += " [field_vial],";
             //            }
             insertmaster += " [field_vial], [host_or_trap], [capture->storage], [fungus], [locality], [county], [province], [country], [date], [VIAL_note], [collector/museum], [date_collected], [pair/family]) VALUES (";
             insertmaster += next + ", '" + comboBox1.Text + "', ";
-            //            if (textBox4.Text != "" && textBox4.Text != " " && textBox4.Text != "  ")
+            //            if (fieldVialTextBox4.Text != "" && fieldVialTextBox4.Text != " " && fieldVialTextBox4.Text != "  ")
             //            {
             //                var num = -1;
-            //                Int32.TryParse(textBox4.Text, out num);
+            //                Int32.TryParse(fieldVialTextBox4.Text, out num);
             //                MessageBox.Show(num.ToString());
             //                if (num != -1 && num != 0)
             //                {
-            //                    insertmaster += textBox4.Text + ", ";
+            //                    insertmaster += fieldVialTextBox4.Text + ", ";
             //                }
             //                else
             //                {
-            //                    insertmaster += "'" + textBox4.Text + "', ";
+            //                    insertmaster += "'" + fieldVialTextBox4.Text + "', ";
             //                }
             //            }
-            insertmaster += "'" + textBox4.Text + "', ";
-            insertmaster += "'" + textBox5.Text + "', ";
+            insertmaster += "'" + fieldVialTextBox4.Text + "', ";
+            insertmaster += "'" + hostTrapTextBox5.Text + "', ";
             insertmaster += "'" + comboBox2.Text + "', ";
             insertmaster += "'" + comboBox3.Text + "', ";
-            insertmaster += "'" + textBox8.Text + "', ";
+            insertmaster += "'" + localityTextBox8.Text + "', ";
             insertmaster += "'" + textBox9.Text + "', ";
             insertmaster += "'" + comboBox4.Text + "', ";
             insertmaster += "'" + comboBox5.Text + "', ";
@@ -651,7 +667,7 @@ namespace BeetleBase
                 Application.Exit();
             }
         }
-        
+
         private void showSpecies_Click(object sender, EventArgs e)
         {
             if (this.aa.Visible)
@@ -690,6 +706,5 @@ namespace BeetleBase
         private void textBox9_TextChanged(object sender, EventArgs e)
         {
 
-        }
-    }
+        }    }
 }

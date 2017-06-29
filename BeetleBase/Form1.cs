@@ -57,12 +57,12 @@ namespace BeetleBase
             this.thefile.dbo = new OleDbConnection(connect);
             try
             {
-                OleDbCommand test = new OleDbCommand("SELECT TOP 10 b.[record], a.[vial], (c.[SpCode] & ' - ' & c.[Genus] & ' ' & c.[Species]) as [Species In Vial], b.[count], b.[male], b.[pair/family], b.[collector/museum], b.[SPECIES_note], b.[borrowed_count], b.[returned_date], b.[loaned_to], b.[loaned_number], b.[from plate], b.[SpCode], b.[PINNED], b.[identifier] FROM (([COLLECTIONS] a LEFT OUTER JOIN [SPECIES_IN_COLLECTIONS] b ON a.[vial] = b.[vial]) LEFT OUTER JOIN [Species_table] c ON b.[SpCode] = c.[SpCode])", this.thefile.dbo);
+                OleDbCommand test = new OleDbCommand("SELECT TOP 10 b.[record], a.[vial], (c.[SpCode] & ' - ' & c.[Genus] & ' ' & c.[Species]) as [Species In Vial], b.[count], b.[male], (a.[Country] & '; ' & a.[province] & '; ' & a.[locality]) as [Location], b.[SPECIES_note] as [Species note], b.[borrowed_count] as [borrowed count], b.[returned_date] as [returned date], b.[loaned_to] as [loaned to:], b.[loaned_number] as [loaned number], b.[from plate], b.[SpCode], b.[PINNED], b.[identifier] FROM (([COLLECTIONS] a LEFT OUTER JOIN [SPECIES_IN_COLLECTIONS] b ON a.[vial] = b.[vial]) LEFT OUTER JOIN [Species_table] c ON b.[SpCode] = c.[SpCode])", this.thefile.dbo);
 
                 OleDbDataAdapter begin = new OleDbDataAdapter(test);
                 begin.Fill(this.thefile.main);
                 begin.Dispose();
-                OleDbCommand test2 = new OleDbCommand("SELECT TOP 10 COLLECTIONS.vial, COLLECTIONS.experiment, COLLECTIONS.field_vial, COLLECTIONS.host_or_trap, COLLECTIONS.[capture->storage], COLLECTIONS.fungus, COLLECTIONS.Country, COLLECTIONS.province, COLLECTIONS.county, COLLECTIONS.locality, COLLECTIONS.date, COLLECTIONS.VIAL_note, COLLECTIONS.[collector/museum], COLLECTIONS.[pair/family], COLLECTIONS.date_collected FROM [COLLECTIONS]", this.thefile.dbo);
+                OleDbCommand test2 = new OleDbCommand("SELECT TOP 10 COLLECTIONS.vial, COLLECTIONS.experiment, COLLECTIONS.field_vial, COLLECTIONS.host_or_trap, COLLECTIONS.[capture->storage], COLLECTIONS.fungus, COLLECTIONS.Country, COLLECTIONS.province, COLLECTIONS.county, COLLECTIONS.locality, COLLECTIONS.date, COLLECTIONS.VIAL_note as [Vial note], COLLECTIONS.[collector/museum], COLLECTIONS.[pair/family], COLLECTIONS.date_collected FROM [COLLECTIONS]", this.thefile.dbo);
                 OleDbDataAdapter begin2 = new OleDbDataAdapter(test2);
                 begin2.Fill(this.thefile.main2);
                 begin2.Dispose();
@@ -112,6 +112,11 @@ namespace BeetleBase
                 MessageBox.Show("Invalid selection!");
                 return;
             }
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

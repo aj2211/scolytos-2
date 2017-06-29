@@ -12,6 +12,12 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using System.IO;
 
+// notes
+// button1 = edit species
+// button2 = save edited species
+// button3 = exit no save
+// button 7 = save new species in vial
+
 namespace BeetleBase
 {
     public partial class Form2 : Form
@@ -50,6 +56,7 @@ namespace BeetleBase
             this.button1.Enabled = !set;
             this.button2.Enabled = set;
             this.button3.Enabled = set;
+            this.getSpCodeButton.Enabled = set;
             this.dataGridView1.Enabled = !set;
             this.textBox1.Enabled = !set;
             this.pinnedbox.Enabled = set;
@@ -64,8 +71,28 @@ namespace BeetleBase
             this.StartPosition = FormStartPosition.Manual;
             this.Location = new System.Drawing.Point(0, 350);
             this.dataGridView1.ReadOnly = true;
-            this.dataGridView1.DataSource = this.thefile.main.Tables[0];
-            this.dataGridView1.Columns[13].Visible = false;
+            this.dataGridView1.DataSource = this.thefile.main.Tables[0];      
+            this.dataGridView1.Columns[12].Visible = false;
+            this.dataGridView1.Columns[0].Width = 40;
+            this.dataGridView1.Columns[1].Width = 40;
+            //species in vial:
+            this.dataGridView1.Columns[2].Width = 200;
+            this.dataGridView1.Columns[3].Width = 40;
+            this.dataGridView1.Columns[4].Width = 40;
+            //concat collection location
+            this.dataGridView1.Columns[5].Width = 100;
+            // species note:
+            this.dataGridView1.Columns[6].Width = 150;
+            // borrowed
+            this.dataGridView1.Columns[7].Width = 60;
+            this.dataGridView1.Columns[8].Width = 80;
+            //loaned to
+            this.dataGridView1.Columns[9].Width = 80;
+            this.dataGridView1.Columns[10].Width = 60;
+            // from plate
+            this.dataGridView1.Columns[11].Width = 40;            
+            this.dataGridView1.Columns[13].Width = 70;
+            this.dataGridView1.Columns[14].Width = 70;
             try
             {
                 string getidentifiers = "SELECT * FROM [COLLECTIONS- Drop Down Collector/Museum]";
@@ -121,7 +148,7 @@ namespace BeetleBase
             richTextBox2.Clear();
             richTextBox3.Clear();
             richTextBox4.Clear();
-            string cmd = "SELECT b.[record], a.[vial], (c.[SpCode] & ' - ' & c.[Genus] & ' ' & c.[Species]) as [Species In Vial], b.[count], b.[male], b.[pair/family], b.[collector/museum], b.[SPECIES_note], b.[borrowed_count], b.[returned_date], b.[loaned_to], b.[loaned_number], b.[from plate], b.[SpCode], b.[PINNED] FROM (([COLLECTIONS] a LEFT OUTER JOIN [SPECIES_IN_COLLECTIONS] b ON a.[vial] = b.[vial]) LEFT OUTER JOIN [Species_table] c ON b.[SpCode] = c.[SpCode])";
+            string cmd = "SELECT b.[record], a.[vial], (c.[SpCode] & ' - ' & c.[Genus] & ' ' & c.[Species]) as [Species In Vial], b.[count], b.[male], (a.[Country] & '; ' & a.[province] & '; ' & a.[locality]) as [Location], b.[SPECIES_note], b.[borrowed_count], b.[returned_date], b.[loaned_to], b.[loaned_number], b.[from plate], b.[SpCode], b.[PINNED], b.[identifier] FROM (([COLLECTIONS] a LEFT OUTER JOIN [SPECIES_IN_COLLECTIONS] b ON a.[vial] = b.[vial]) LEFT OUTER JOIN [Species_table] c ON b.[SpCode] = c.[SpCode])";
             if (textBox1.Text.Trim() != "")
             {
                 cmd += "WHERE a.[vial] = " + textBox1.Text;
@@ -136,7 +163,7 @@ namespace BeetleBase
             DataSet vials = new DataSet();
             vialadapter.Fill(vials);
             this.dataGridView1.DataSource = vials.Tables[0];
-            this.dataGridView1.Columns[13].Visible = false;
+            this.dataGridView1.Columns[12].Visible = false;
             vialadapter.Dispose();
         }
 
@@ -179,31 +206,33 @@ namespace BeetleBase
 
             form2editenable(true);
             button6.Enabled = false;
-            button8.Enabled = false;
+            button7.Enabled = false;
+            button8.Enabled = false; 
+            
             this.currentvial = col[1].Value.ToString();
-            this.currentrecord = col[0].Value.ToString();
-            textBox2.Text = col[13].Value.ToString();
+            this.currentrecord = col[0].Value.ToString();                                             
+            textBox2.Text = col[12].Value.ToString();
             textBox8.Text = col[1].Value.ToString();
             textBox9.Text = col[3].Value.ToString();
 
             textBox11.Text = col[4].Value.ToString();
 //            textBox3.Text = col[6].Value.ToString();
-            textBox4.Text = col[7].Value.ToString();
+            textBox4.Text = col[6].Value.ToString();
 //            e.ToString();
-            textBox5.Text = col[8].Value.ToString();
+            textBox5.Text = col[7].Value.ToString();
 
             char[] delimiterChars = { '/' };
-            string[] words1 = col[10].Value.ToString().Split(delimiterChars);
+            string[] words1 = col[9].Value.ToString().Split(delimiterChars);
             if (words1.Length > 1)
             {
                 comboBox1.Text = words1[2];
                 comboBox2.Text = words1[0];
                 comboBox3.Text = words1[1];
             }
-            textBox7.Text = col[10].Value.ToString();
-            textBox14.Text = col[11].Value.ToString();
-            textBox13.Text = col[12].Value.ToString();
-            if (col[14].Value.ToString() == "True")
+            textBox7.Text = col[9].Value.ToString();
+            textBox14.Text = col[10].Value.ToString();
+            textBox13.Text = col[11].Value.ToString();
+            if (col[13].Value.ToString() == "True")
             {
                 pinnedbox.Checked = true;
             }
@@ -211,7 +240,7 @@ namespace BeetleBase
             {
                 pinnedbox.Checked = false;
             }
-            identifiercombo.Text = col[6].Value.ToString();
+            identifiercombo.Text = col[14].Value.ToString();
         }
 
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
@@ -219,7 +248,7 @@ namespace BeetleBase
 
         }
 
-        private void textBox2_Enter(object sender, EventArgs e)
+        private void getSpCodeButton_Click(object sender, EventArgs e)
         {
             this.Cursor = Cursors.WaitCursor;
             Form popup = new Form3(this.thefile, this.mutual);
@@ -246,9 +275,11 @@ namespace BeetleBase
             }
         }
 
+        // this button is "exit no save"
         private void button3_Click(object sender, EventArgs e)
         {
             this.editting = false;
+            richTextBox1.Text = "";
             textBox2.Text = "";
             textBox8.Text = "";
             textBox9.Text = "";
@@ -269,12 +300,21 @@ namespace BeetleBase
             button8.Enabled = true;
         }
 
+        // this is the "save edited species in vial" button
+        
         private void button2_Click(object sender, EventArgs e)
         {
             this.editting = false;
             if (this.thefile.dbo.State != ConnectionState.Open)
             {
                 this.thefile.dbo.Open();
+            }
+            // check if count has been entered:
+            if (textBox9.Text == "")
+            {
+                //find warning popup and abort
+                MessageBox.Show("Info missing: count");
+                return;
             }
             string updatemaster = "UPDATE [SPECIES_IN_COLLECTIONS] SET ";
             if (textBox8.Text.Trim() == "")
@@ -353,11 +393,12 @@ namespace BeetleBase
             {
                 updatemaster += ", [PINNED] = " + "False";
             }
+            updatemaster += ", [identifier] = '" + identifiercombo.Text + "'";
             try
             {
                 updatemaster += " WHERE record = " + currentrecord;
-
-                string updatemaster2 = "UPDATE [SPECIES_IN_COLLECTIONS] SET [identifier] = '" + identifiercombo.Text + "' WHERE [record] = " + currentrecord;
+                // what is this? updatemaster2 was never used
+                //string updatemaster2 = "UPDATE [SPECIES_IN_COLLECTIONS] SET [identifier] = '" + identifiercombo.Text + "' WHERE [record] = " + currentrecord;
                 try
                 {
                     OleDbCommand up = new OleDbCommand(updatemaster, this.thefile.dbo);
@@ -377,6 +418,7 @@ namespace BeetleBase
             form2editenable(false);
         }
 
+        // this button is for updating when a new vial is made???
         private void button4_Click(object sender, EventArgs e)
         {
             if (!this.vial.Visible)
@@ -393,6 +435,7 @@ namespace BeetleBase
 
         }
 
+        //this part gets the value from a new vial??? (button5 is save new vial on form 4)
         private void button5_Click(object sender, EventArgs e)
         {
             if (!this.vial.Visible)
@@ -437,6 +480,7 @@ namespace BeetleBase
             this.vial.button1_Click(null, null);
         }
 
+        // this is "add new species to vial"
         private void button6_Click(object sender, EventArgs e)
         {
             DataGridViewSelectedRowCollection editted;
@@ -474,7 +518,8 @@ namespace BeetleBase
             form2editenable(true);
             button8.Enabled = false;
             button2.Enabled = false;
-            button3.Enabled = true;
+            button3.Enabled = true;  
+            getSpCodeButton.Enabled = true;
             //            button4.Enabled = false;
             //           button5.Enabled = false;
             button6.Enabled = false;
@@ -485,6 +530,12 @@ namespace BeetleBase
             if (this.thefile.dbo.State != ConnectionState.Open)
             {
                 this.thefile.dbo.Open();
+            }
+            if (textBox9.Text == "")
+            {
+                //find warning popup and abort
+                MessageBox.Show("Info missing: count");
+                return;
             }
             string insertmaster = "INSERT INTO [SPECIES_IN_COLLECTIONS] (";
             string insertmaster2 = ") VALUES (";
@@ -695,13 +746,13 @@ namespace BeetleBase
             col = editted[0].Cells;
             if (col.Count > 0)
             {
-                if (editted[0].Cells[13].Value.ToString().Trim() != "")
+                if (editted[0].Cells[12].Value.ToString().Trim() != "")
                 {
                     /*
                     try
                     {
                     */
-                    string cmd = "SELECT [ImagePath] FROM [Images] WHERE [SpCode] = " + editted[0].Cells[13].Value.ToString() + " ORDER BY [SpCode] ASC";
+                    string cmd = "SELECT [ImagePath] FROM [Images] WHERE [SpCode] = " + editted[0].Cells[12].Value.ToString() + " ORDER BY [SpCode] ASC";
 //                    MessageBox.Show(cmd);
                     OleDbCommand test = new OleDbCommand(cmd, this.thefile.dbo);
                     OleDbDataAdapter begin = new OleDbDataAdapter(test);

@@ -64,9 +64,9 @@
             this.label2 = new System.Windows.Forms.Label();
             this.textBox13 = new System.Windows.Forms.TextBox();
             this.textBox9 = new System.Windows.Forms.TextBox();
-            this.textBox8 = new System.Windows.Forms.TextBox();
-            this.textBox5 = new System.Windows.Forms.TextBox();
-            this.textBox4 = new System.Windows.Forms.TextBox();
+            this.localityTextBox8 = new System.Windows.Forms.TextBox();
+            this.hostTrapTextBox5 = new System.Windows.Forms.TextBox();
+            this.fieldVialTextBox4 = new System.Windows.Forms.TextBox();
             this.button5 = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
@@ -89,7 +89,7 @@
             this.dataGridView1.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
             this.dataGridView1.Location = new System.Drawing.Point(12, 204);
             this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(686, 117);
+            this.dataGridView1.Size = new System.Drawing.Size(952, 115);
             this.dataGridView1.TabIndex = 0;
             // 
             // textBox1
@@ -149,9 +149,9 @@
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.textBox13);
             this.groupBox1.Controls.Add(this.textBox9);
-            this.groupBox1.Controls.Add(this.textBox8);
-            this.groupBox1.Controls.Add(this.textBox5);
-            this.groupBox1.Controls.Add(this.textBox4);
+            this.groupBox1.Controls.Add(this.localityTextBox8);
+            this.groupBox1.Controls.Add(this.hostTrapTextBox5);
+            this.groupBox1.Controls.Add(this.fieldVialTextBox4);
             this.groupBox1.Location = new System.Drawing.Point(120, 23);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(578, 170);
@@ -174,7 +174,7 @@
             this.checkBox1.Location = new System.Drawing.Point(280, 148);
             this.checkBox1.Name = "checkBox1";
             this.checkBox1.Size = new System.Drawing.Size(15, 14);
-            this.checkBox1.TabIndex = 27;
+            this.checkBox1.TabIndex = 18;
             this.checkBox1.UseVisualStyleBackColor = true;
             // 
             // comboBox12
@@ -293,7 +293,7 @@
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(102, 23);
             this.button2.TabIndex = 18;
-            this.button2.Text = "Save Vial";
+            this.button2.Text = "Save Edited Vial";
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
@@ -437,6 +437,7 @@
             this.comboBox5.Location = new System.Drawing.Point(9, 72);
             this.comboBox5.Name = "comboBox5";
             this.comboBox5.Size = new System.Drawing.Size(97, 21);
+            this.comboBox5.Sorted = true;
             this.comboBox5.TabIndex = 6;
             // 
             // comboBox4
@@ -478,6 +479,7 @@
             this.comboBox1.Location = new System.Drawing.Point(6, 35);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(100, 21);
+            this.comboBox1.Sorted = true;
             this.comboBox1.TabIndex = 1;
             // 
             // label14
@@ -512,9 +514,9 @@
             this.label11.AutoSize = true;
             this.label11.Location = new System.Drawing.Point(428, 57);
             this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(74, 13);
+            this.label11.Size = new System.Drawing.Size(130, 13);
             this.label11.TabIndex = 23;
-            this.label11.Text = "Date Updated";
+            this.label11.Text = "Date Updated (Automatic)";
             // 
             // label10
             // 
@@ -558,18 +560,18 @@
             this.label6.AutoSize = true;
             this.label6.Location = new System.Drawing.Point(428, 19);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(42, 13);
+            this.label6.Size = new System.Drawing.Size(127, 13);
             this.label6.TabIndex = 18;
-            this.label6.Text = "Fungus";
+            this.label6.Text = "Fungus or Gallery storage";
             // 
             // label5
             // 
             this.label5.AutoSize = true;
             this.label5.Location = new System.Drawing.Point(322, 19);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(96, 13);
+            this.label5.Size = new System.Drawing.Size(111, 13);
             this.label5.TabIndex = 17;
-            this.label5.Text = "Capture or Storage";
+            this.label5.Text = "Capture Initial Storage";
             // 
             // label4
             // 
@@ -613,33 +615,33 @@
             this.textBox9.TabIndex = 8;
             this.textBox9.TextChanged += new System.EventHandler(this.textBox9_TextChanged);
             // 
-            // textBox8
+            // localityTextBox8
             // 
-            this.textBox8.Location = new System.Drawing.Point(325, 72);
-            this.textBox8.Name = "textBox8";
-            this.textBox8.Size = new System.Drawing.Size(100, 20);
-            this.textBox8.TabIndex = 9;
+            this.localityTextBox8.Location = new System.Drawing.Point(325, 72);
+            this.localityTextBox8.Name = "localityTextBox8";
+            this.localityTextBox8.Size = new System.Drawing.Size(100, 20);
+            this.localityTextBox8.TabIndex = 9;
             // 
-            // textBox5
+            // hostTrapTextBox5
             // 
-            this.textBox5.Location = new System.Drawing.Point(218, 35);
-            this.textBox5.Name = "textBox5";
-            this.textBox5.Size = new System.Drawing.Size(100, 20);
-            this.textBox5.TabIndex = 3;
+            this.hostTrapTextBox5.Location = new System.Drawing.Point(218, 35);
+            this.hostTrapTextBox5.Name = "hostTrapTextBox5";
+            this.hostTrapTextBox5.Size = new System.Drawing.Size(100, 20);
+            this.hostTrapTextBox5.TabIndex = 3;
             // 
-            // textBox4
+            // fieldVialTextBox4
             // 
-            this.textBox4.Location = new System.Drawing.Point(112, 35);
-            this.textBox4.Name = "textBox4";
-            this.textBox4.Size = new System.Drawing.Size(100, 20);
-            this.textBox4.TabIndex = 2;
+            this.fieldVialTextBox4.Location = new System.Drawing.Point(112, 35);
+            this.fieldVialTextBox4.Name = "fieldVialTextBox4";
+            this.fieldVialTextBox4.Size = new System.Drawing.Size(100, 20);
+            this.fieldVialTextBox4.TabIndex = 2;
             // 
             // button5
             // 
             this.button5.Location = new System.Drawing.Point(12, 81);
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(102, 23);
-            this.button5.TabIndex = 0;
+            this.button5.TabIndex = 19;
             this.button5.Text = "Save New Vial";
             this.button5.UseVisualStyleBackColor = true;
             this.button5.Click += new System.EventHandler(this.button5_Click);
@@ -649,7 +651,7 @@
             this.button4.Location = new System.Drawing.Point(12, 50);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(102, 23);
-            this.button4.TabIndex = 0;
+            this.button4.TabIndex = 20;
             this.button4.Text = "New Vial";
             this.button4.UseVisualStyleBackColor = true;
             this.button4.Click += new System.EventHandler(this.button4_Click);
@@ -659,7 +661,7 @@
             this.button3.Location = new System.Drawing.Point(12, 113);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(102, 23);
-            this.button3.TabIndex = 0;
+            this.button3.TabIndex = 21;
             this.button3.Text = "Exit (No Save)";
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click);
@@ -672,7 +674,7 @@
             this.button6.Location = new System.Drawing.Point(503, 3);
             this.button6.Name = "button6";
             this.button6.Size = new System.Drawing.Size(195, 23);
-            this.button6.TabIndex = 100;
+            this.button6.TabIndex = 22;
             this.button6.Text = "Edit Menus...";
             this.button6.UseVisualStyleBackColor = false;
             this.button6.Click += new System.EventHandler(this.button6_Click);
@@ -682,7 +684,7 @@
             this.button7.Location = new System.Drawing.Point(12, 144);
             this.button7.Name = "button7";
             this.button7.Size = new System.Drawing.Size(102, 23);
-            this.button7.TabIndex = 100;
+            this.button7.TabIndex = 23;
             this.button7.Text = "Delete Vial";
             this.button7.UseVisualStyleBackColor = true;
             this.button7.Click += new System.EventHandler(this.button7_Click);
@@ -692,7 +694,7 @@
             this.showSpecies.Location = new System.Drawing.Point(12, 175);
             this.showSpecies.Name = "showSpecies";
             this.showSpecies.Size = new System.Drawing.Size(102, 23);
-            this.showSpecies.TabIndex = 4;
+            this.showSpecies.TabIndex = 24;
             this.showSpecies.Text = "Show Species";
             this.showSpecies.UseVisualStyleBackColor = true;
             this.showSpecies.Click += new System.EventHandler(this.showSpecies_Click);
@@ -705,7 +707,7 @@
             this.speciesLookUp.Location = new System.Drawing.Point(302, 3);
             this.speciesLookUp.Name = "speciesLookUp";
             this.speciesLookUp.Size = new System.Drawing.Size(195, 23);
-            this.speciesLookUp.TabIndex = 5;
+            this.speciesLookUp.TabIndex = 25;
             this.speciesLookUp.Text = "Search Vials By Species";
             this.speciesLookUp.UseVisualStyleBackColor = false;
             this.speciesLookUp.Click += new System.EventHandler(this.speciesLookUp_Click);
@@ -714,7 +716,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(710, 332);
+            this.ClientSize = new System.Drawing.Size(976, 330);
             this.Controls.Add(this.speciesLookUp);
             this.Controls.Add(this.showSpecies);
             this.Controls.Add(this.button7);
@@ -727,8 +729,9 @@
             this.Controls.Add(this.button4);
             this.Controls.Add(this.button5);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Location = new System.Drawing.Point(0, 345);
+            this.Location = new System.Drawing.Point(0, 399);
             this.Name = "Form4";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "Vial Manager";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form4_FormClosing);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
@@ -745,9 +748,9 @@
         public System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.TextBox textBox4;
-        private System.Windows.Forms.TextBox textBox5;
-        private System.Windows.Forms.TextBox textBox8;
+        private System.Windows.Forms.TextBox fieldVialTextBox4;
+        private System.Windows.Forms.TextBox hostTrapTextBox5;
+        private System.Windows.Forms.TextBox localityTextBox8;
         private System.Windows.Forms.TextBox textBox9;
         private System.Windows.Forms.TextBox textBox13;
         private System.Windows.Forms.Label label14;

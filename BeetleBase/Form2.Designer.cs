@@ -56,6 +56,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.textBox14 = new System.Windows.Forms.TextBox();
             this.textBox13 = new System.Windows.Forms.TextBox();
+            this.getSpCodeButton = new System.Windows.Forms.Button();
             this.textBox11 = new System.Windows.Forms.TextBox();
             this.textBox9 = new System.Windows.Forms.TextBox();
             this.textBox8 = new System.Windows.Forms.TextBox();
@@ -88,12 +89,13 @@
             this.textBox1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.textBox1_KeyDown);
             this.textBox1.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox1_KeyPress);
             //this.textBox1.KeyUp += new System.Windows.Forms.KeyEventHandler(this.textBox1_KeyUp);
+            // uncomment the following when editing from in visual studio
             this.textBox1.KeyUp += new System.Windows.Forms.KeyEventHandler
             ((a, b) =>
                 {
                     this.textBox1_KeyUp(a, b, false);
                 }
-            );
+            );             
             // 
             // label1
             // 
@@ -134,8 +136,8 @@
             this.button2.Location = new System.Drawing.Point(359, 144);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(102, 38);
-            this.button2.TabIndex = 0;
-            this.button2.Text = "Save Editted Species In Vial";
+            this.button2.TabIndex = 16;
+            this.button2.Text = "Save Edited Species In Vial";
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
@@ -163,6 +165,7 @@
             this.groupBox1.Controls.Add(this.textBox14);
             this.groupBox1.Controls.Add(this.button2);
             this.groupBox1.Controls.Add(this.textBox13);
+            this.groupBox1.Controls.Add(this.getSpCodeButton);
             this.groupBox1.Controls.Add(this.button1);
             this.groupBox1.Controls.Add(this.textBox11);
             this.groupBox1.Controls.Add(this.textBox9);
@@ -176,12 +179,12 @@
             this.groupBox1.Size = new System.Drawing.Size(572, 188);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Field Info";
+            this.groupBox1.Text = "Edit info";
             // 
             // richTextBox1
             // 
             this.richTextBox1.Enabled = false;
-            this.richTextBox1.Location = new System.Drawing.Point(85, 20);
+            this.richTextBox1.Location = new System.Drawing.Point(117, 20);
             this.richTextBox1.Name = "richTextBox1";
             this.richTextBox1.Size = new System.Drawing.Size(103, 46);
             this.richTextBox1.TabIndex = 29;
@@ -354,7 +357,7 @@
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(308, 15);
+            this.label12.Location = new System.Drawing.Point(340, 15);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(35, 13);
             this.label12.TabIndex = 24;
@@ -418,7 +421,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(202, 15);
+            this.label3.Location = new System.Drawing.Point(234, 15);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(64, 13);
             this.label3.TabIndex = 14;
@@ -447,6 +450,16 @@
             this.textBox13.Size = new System.Drawing.Size(100, 20);
             this.textBox13.TabIndex = 13;
             // 
+            // getSpCodeButton
+            // 
+            this.getSpCodeButton.Location = new System.Drawing.Point(5, 33);
+            this.getSpCodeButton.Name = "getSpCodeButton";
+            this.getSpCodeButton.Size = new System.Drawing.Size(60, 22);
+            this.getSpCodeButton.TabIndex = 1;
+            this.getSpCodeButton.Text = "Select";
+            this.getSpCodeButton.UseVisualStyleBackColor = true;
+            this.getSpCodeButton.Click += new System.EventHandler(this.getSpCodeButton_Click);
+            // 
             // textBox11
             // 
             this.textBox11.Location = new System.Drawing.Point(465, 34);
@@ -456,14 +469,15 @@
             // 
             // textBox9
             // 
-            this.textBox9.Location = new System.Drawing.Point(311, 34);
+            this.textBox9.Location = new System.Drawing.Point(343, 34);
             this.textBox9.Name = "textBox9";
             this.textBox9.Size = new System.Drawing.Size(100, 20);
             this.textBox9.TabIndex = 3;
             // 
             // textBox8
             // 
-            this.textBox8.Location = new System.Drawing.Point(205, 34);
+            this.textBox8.Enabled = false;
+            this.textBox8.Location = new System.Drawing.Point(237, 34);
             this.textBox8.Name = "textBox8";
             this.textBox8.Size = new System.Drawing.Size(100, 20);
             this.textBox8.TabIndex = 2;
@@ -491,11 +505,11 @@
             // 
             // textBox2
             // 
-            this.textBox2.Location = new System.Drawing.Point(6, 34);
+            this.textBox2.Location = new System.Drawing.Point(68, 34);
             this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(69, 20);
+            this.textBox2.Size = new System.Drawing.Size(39, 20);
             this.textBox2.TabIndex = 1;
-            this.textBox2.Click += new System.EventHandler(this.textBox2_Enter);
+            this.textBox2.TabStop = false;
             // 
             // button6
             // 
@@ -512,7 +526,7 @@
             this.button7.Location = new System.Drawing.Point(12, 88);
             this.button7.Name = "button7";
             this.button7.Size = new System.Drawing.Size(75, 49);
-            this.button7.TabIndex = 0;
+            this.button7.TabIndex = 17;
             this.button7.Text = "Save New Species In Vial";
             this.button7.UseVisualStyleBackColor = true;
             this.button7.Click += new System.EventHandler(this.button7_Click);
@@ -598,7 +612,8 @@
             this.showVials.Location = new System.Drawing.Point(12, 190);
             this.showVials.Name = "showVials";
             this.showVials.Size = new System.Drawing.Size(75, 23);
-            this.showVials.TabIndex = 13;
+            this.showVials.TabIndex = 0;
+            this.showVials.TabStop = false;
             this.showVials.Text = "Show Vials";
             this.showVials.UseVisualStyleBackColor = true;
             this.showVials.Click += new System.EventHandler(this.showVials_Click);
@@ -625,7 +640,7 @@
             this.Controls.Add(this.dataGridView1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form2";
-            this.Text = "Species-In-Vial Manager";
+            this.Text = "Specimens in Vials Manager";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form2_FormClosing);
             this.Load += new System.EventHandler(this.Form2_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
@@ -684,5 +699,6 @@
         private System.Windows.Forms.Label label16;
         private System.Windows.Forms.Label label17;
         private System.Windows.Forms.Button showVials;
+        private System.Windows.Forms.Button getSpCodeButton;
     }
 }

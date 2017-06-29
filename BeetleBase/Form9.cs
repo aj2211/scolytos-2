@@ -216,7 +216,7 @@ private void updateGridViewsForm3(object sender, EventArgs e)
         masterselect += " c.[species] ='" + comboBox3.Text + "'";
     }
     //            string speciescodeselect = "SELECT SpCode, species FROM [Species_table]" + masterselect;
-    string relationselect = "SELECT b.[SpCode], a.[vial], b.[record], (c.[SpCode] & ' - ' & c.[Genus] & ' ' & c.[Species]) as [Species In Vial], b.[count], b.[male], b.[pair/family], b.[collector/museum], b.[SPECIES_note], b.[borrowed_count], b.[returned_date], b.[loaned_to], b.[loaned_number], b.[from plate], b.[PINNED], b.[identifier] FROM (([COLLECTIONS] a LEFT OUTER JOIN [SPECIES_IN_COLLECTIONS] b ON a.[vial] = b.[vial]) LEFT OUTER JOIN [Species_table] c ON b.[SpCode] = c.[SpCode]) " + masterselect;
+    string relationselect = "SELECT a.[vial], b.[record], (c.[SpCode] & ' - ' & c.[Genus] & ' ' & c.[Species]) as [Species In Vial], b.[count], (a.[Country] & '; ' & a.[province] & '; ' & a.[locality]) as [Location], a.[capture->storage], a.[collector/museum], a.[VIAL_note], b.[SPECIES_note], b.[borrowed_count], b.[returned_date], b.[loaned_to], b.[loaned_number], b.[from plate], b.[PINNED], b.[identifier] FROM (([COLLECTIONS] a LEFT OUTER JOIN [SPECIES_IN_COLLECTIONS] b ON a.[vial] = b.[vial]) LEFT OUTER JOIN [Species_table] c ON b.[SpCode] = c.[SpCode]) " + masterselect;
     //            DataSet SpCode = new DataSet();
     DataSet Relation = new DataSet();
     OleDbCommand fetch = new OleDbCommand(relationselect, this.thefile.dbo);
@@ -224,6 +224,22 @@ private void updateGridViewsForm3(object sender, EventArgs e)
     fetchadapter.Fill(Relation, "RELATIONS");
             this.dataGridView1.DataSource = null;
     this.dataGridView1.DataSource = Relation.Tables["RELATIONS"];
+    this.dataGridView1.Columns[0].Width = 40;
+    this.dataGridView1.Columns[1].Width = 50;
+    this.dataGridView1.Columns[2].Width = 150;
+    this.dataGridView1.Columns[3].Width = 45;
+    this.dataGridView1.Columns[4].Width = 150;
+    this.dataGridView1.Columns[5].Width = 70;
+    this.dataGridView1.Columns[6].Width = 70;
+    this.dataGridView1.Columns[7].Width = 108;
+    this.dataGridView1.Columns[8].Width = 108;
+    this.dataGridView1.Columns[9].Width = 70;
+    this.dataGridView1.Columns[10].Width = 70;
+    this.dataGridView1.Columns[11].Width = 108;
+    this.dataGridView1.Columns[12].Width = 70;    
+    this.dataGridView1.Columns[13].Width = 60;
+    this.dataGridView1.Columns[14].Width = 60;  
+    this.dataGridView1.Columns[14].Width = 70;
             this.dataGridView1.Refresh();
     //            this.dataGridView2.DataSource = Relation.Tables["RELATIONS"];
 }
@@ -527,7 +543,7 @@ private void textBox1_TextChanged(object sender, EventArgs e)
             if (editted.Count > 0)
             {
                 col = editted[0].Cells;
-                string tribedungo = "SELECT b.[SpCode], a.[vial], b.[record], (c.[SpCode] & ' - ' & c.[Genus] & ' ' & c.[Species]) as [Species In Vial], b.[count], b.[male], b.[pair/family], b.[collector/museum], b.[SPECIES_note], b.[borrowed_count], b.[returned_date], b.[loaned_to], b.[loaned_number], b.[from plate], b.[PINNED], b.[identifier] FROM (([COLLECTIONS] a LEFT OUTER JOIN [SPECIES_IN_COLLECTIONS] b ON a.[vial] = b.[vial]) LEFT OUTER JOIN [Species_table] c ON b.[SpCode] = c.[SpCode]) WHERE a.[vial] = " + ((col[1].Value.ToString() != null) ? col[1].Value.ToString() : "NULL");
+                string tribedungo = "SELECT a.[vial], b.[record], (c.[SpCode] & ' - ' & c.[Genus] & ' ' & c.[Species]) as [Species In Vial], b.[count], (a.[Country] & '; ' & a.[province] & '; ' & a.[locality]) as [Location], a.[capture->storage], a.[collector/museum], a.[VIAL_note], b.[SPECIES_note], b.[borrowed_count], b.[returned_date], b.[loaned_to], b.[loaned_number], b.[from plate], b.[PINNED], b.[identifier] FROM (([COLLECTIONS] a LEFT OUTER JOIN [SPECIES_IN_COLLECTIONS] b ON a.[vial] = b.[vial]) LEFT OUTER JOIN [Species_table] c ON b.[SpCode] = c.[SpCode]) WHERE a.[vial] = " + ((col[1].Value.ToString() != null) ? col[1].Value.ToString() : "NULL");
                 try
                 {
                     this.Cursor = Cursors.WaitCursor;
