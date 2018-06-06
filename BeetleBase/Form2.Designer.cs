@@ -88,14 +88,7 @@
             this.textBox1.TabIndex = 0;
             this.textBox1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.textBox1_KeyDown);
             this.textBox1.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox1_KeyPress);
-            //this.textBox1.KeyUp += new System.Windows.Forms.KeyEventHandler(this.textBox1_KeyUp);
-            // uncomment the following when editing from in visual studio
-            this.textBox1.KeyUp += new System.Windows.Forms.KeyEventHandler
-            ((a, b) =>
-                {
-                    this.textBox1_KeyUp(a, b, false);
-                }
-            );             
+            this.textBox1.KeyUp += new System.Windows.Forms.KeyEventHandler((a, b) => { this.textBox1_KeyUp(a, b, false); });
             // 
             // label1
             // 
@@ -123,11 +116,11 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(253, 159);
+            this.button1.Location = new System.Drawing.Point(11, 89);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(102, 22);
+            this.button1.Size = new System.Drawing.Size(76, 44);
             this.button1.TabIndex = 0;
-            this.button1.Text = "Edit Species";
+            this.button1.Text = "Edit Species in Vial";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
@@ -152,6 +145,7 @@
             this.groupBox1.Controls.Add(this.comboBox2);
             this.groupBox1.Controls.Add(this.comboBox1);
             this.groupBox1.Controls.Add(this.button3);
+            this.groupBox1.Controls.Add(this.button7);
             this.groupBox1.Controls.Add(this.label13);
             this.groupBox1.Controls.Add(this.label12);
             this.groupBox1.Controls.Add(this.label11);
@@ -166,7 +160,6 @@
             this.groupBox1.Controls.Add(this.button2);
             this.groupBox1.Controls.Add(this.textBox13);
             this.groupBox1.Controls.Add(this.getSpCodeButton);
-            this.groupBox1.Controls.Add(this.button1);
             this.groupBox1.Controls.Add(this.textBox11);
             this.groupBox1.Controls.Add(this.textBox9);
             this.groupBox1.Controls.Add(this.textBox8);
@@ -337,11 +330,11 @@
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(466, 159);
+            this.button3.Location = new System.Drawing.Point(466, 143);
             this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(102, 22);
+            this.button3.Size = new System.Drawing.Size(85, 38);
             this.button3.TabIndex = 0;
-            this.button3.Text = "Exit (No Save)";
+            this.button3.Text = "Cancel/Exit  (No Save)";
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
@@ -523,9 +516,9 @@
             // 
             // button7
             // 
-            this.button7.Location = new System.Drawing.Point(12, 88);
+            this.button7.Location = new System.Drawing.Point(257, 145);
             this.button7.Name = "button7";
-            this.button7.Size = new System.Drawing.Size(75, 49);
+            this.button7.Size = new System.Drawing.Size(96, 36);
             this.button7.TabIndex = 17;
             this.button7.Text = "Save New Species In Vial";
             this.button7.UseVisualStyleBackColor = true;
@@ -533,7 +526,7 @@
             // 
             // button8
             // 
-            this.button8.Location = new System.Drawing.Point(12, 140);
+            this.button8.Location = new System.Drawing.Point(12, 137);
             this.button8.Name = "button8";
             this.button8.Size = new System.Drawing.Size(75, 47);
             this.button8.TabIndex = 100;
@@ -632,12 +625,12 @@
             this.Controls.Add(this.richTextBox2);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.button8);
-            this.Controls.Add(this.button7);
             this.Controls.Add(this.button6);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.dataGridView1);
+            this.Controls.Add(this.button1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form2";
             this.Text = "Specimens in Vials Manager";

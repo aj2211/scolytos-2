@@ -57,7 +57,7 @@ namespace BeetleBase
             this.thefile.dbo = new OleDbConnection(connect);
             try
             {
-                OleDbCommand test = new OleDbCommand("SELECT TOP 10 b.[record], a.[vial], (c.[SpCode] & ' - ' & c.[Genus] & ' ' & c.[Species]) as [Species In Vial], b.[count], b.[male], (a.[Country] & '; ' & a.[province] & '; ' & a.[locality]) as [Location], b.[SPECIES_note] as [Species note], b.[borrowed_count] as [borrowed count], b.[returned_date] as [returned date], b.[loaned_to] as [loaned to:], b.[loaned_number] as [loaned number], b.[from plate], b.[SpCode], b.[PINNED], b.[identifier] FROM (([COLLECTIONS] a LEFT OUTER JOIN [SPECIES_IN_COLLECTIONS] b ON a.[vial] = b.[vial]) LEFT OUTER JOIN [Species_table] c ON b.[SpCode] = c.[SpCode])", this.thefile.dbo);
+                OleDbCommand test = new OleDbCommand("SELECT TOP 10 b.[record], a.[vial], (c.[SpCode] & ' - ' & c.[Genus] & ' ' & c.[Species]) as [Species In Vial], b.[count], b.[male], (a.[Country] & '; ' & a.[province] & '; ' & a.[locality]) as [Location], b.[SPECIES_note] as [Species note], b.[borrowed_count] as [borrowed count], b.[returned_date] as [returned date], b.[loaned_to] as [loaned to:], b.[loaned_number] as [loaned number], b.[from plate], b.[SpCode], b.[PINNED], b.[identifier] FROM (([COLLECTIONS] a LEFT OUTER JOIN [SPECIES_IN_COLLECTIONS] b ON a.[vial] = b.[vial]) LEFT OUTER JOIN [Species_table] c ON b.[SpCode] = c.[SpCode]) WHERE a.vial > 0", this.thefile.dbo);
 
                 OleDbDataAdapter begin = new OleDbDataAdapter(test);
                 begin.Fill(this.thefile.main);
@@ -115,6 +115,11 @@ namespace BeetleBase
         }
 
         private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
         {
 
         }

@@ -137,10 +137,21 @@ namespace BeetleBase
             {
                 return;
             }
+            // this is the default value if noting is entered
             string cmd = "SELECT COLLECTIONS.vial, COLLECTIONS.experiment, COLLECTIONS.field_vial, COLLECTIONS.host_or_trap, COLLECTIONS.[capture->storage], COLLECTIONS.fungus, COLLECTIONS.Country, COLLECTIONS.province, COLLECTIONS.county, COLLECTIONS.locality, COLLECTIONS.date, COLLECTIONS.VIAL_note, COLLECTIONS.[collector/museum], COLLECTIONS.[pair/family], COLLECTIONS.date_collected FROM [COLLECTIONS] WHERE vial Is Not Null";
             if (textBox1.Text.Trim() != "")
             {
-                cmd = "SELECT COLLECTIONS.vial, COLLECTIONS.experiment, COLLECTIONS.field_vial, COLLECTIONS.host_or_trap, COLLECTIONS.[capture->storage], COLLECTIONS.fungus, COLLECTIONS.Country, COLLECTIONS.province, COLLECTIONS.county, COLLECTIONS.locality, COLLECTIONS.date, COLLECTIONS.VIAL_note, COLLECTIONS.[collector/museum], COLLECTIONS.[pair/family], COLLECTIONS.date_collected FROM [COLLECTIONS] WHERE vial =" + textBox1.Text;
+                if (textBox1.Text.Contains("-"))
+                {
+                    string[] searchrange = textBox1.Text.Split('-');
+                    var minvial = searchrange[0];
+                    var maxvial = searchrange[1];
+                    cmd = "SELECT COLLECTIONS.vial, COLLECTIONS.experiment, COLLECTIONS.field_vial, COLLECTIONS.host_or_trap, COLLECTIONS.[capture->storage], COLLECTIONS.fungus, COLLECTIONS.Country, COLLECTIONS.province, COLLECTIONS.county, COLLECTIONS.locality, COLLECTIONS.date, COLLECTIONS.VIAL_note, COLLECTIONS.[collector/museum], COLLECTIONS.[pair/family], COLLECTIONS.date_collected FROM [COLLECTIONS] WHERE vial BETWEEN " + minvial + " and " +maxvial;                
+                }
+                else
+                {
+                    cmd = "SELECT COLLECTIONS.vial, COLLECTIONS.experiment, COLLECTIONS.field_vial, COLLECTIONS.host_or_trap, COLLECTIONS.[capture->storage], COLLECTIONS.fungus, COLLECTIONS.Country, COLLECTIONS.province, COLLECTIONS.county, COLLECTIONS.locality, COLLECTIONS.date, COLLECTIONS.VIAL_note, COLLECTIONS.[collector/museum], COLLECTIONS.[pair/family], COLLECTIONS.date_collected FROM [COLLECTIONS] WHERE vial =" + textBox1.Text;
+                }
                 aa.textBox1.Text = textBox1.Text;
                 if (!loop)
                 {
@@ -173,6 +184,7 @@ namespace BeetleBase
         {
             this.editting = true;
             this.button4.Enabled = false;
+            button8newsimilarvial.Enabled = false;
             DataGridViewSelectedRowCollection editted;
             DataGridViewCellCollection col;
             if (this.dataGridView1.SelectedCells.Count == 0 && this.dataGridView1.SelectedRows.Count == 0)
@@ -391,8 +403,9 @@ namespace BeetleBase
             textBox1_KeyUp(null, null, false);
             button3_Click(null, null);
             form4editenable(false);
+            showSpecies.Enabled = true;
         }
-
+        // Button 3 is exit no save
         private void button3_Click(object sender, EventArgs e)
         {
             this.editting = false;
@@ -414,14 +427,16 @@ namespace BeetleBase
             this.comboBox11.Text = "";
             this.comboBox12.Text = "";
             this.button5.Enabled = false;
+            this.button8newsimilarvial.Enabled = true;
             this.button4.Enabled = true;
+            this.showSpecies.Enabled = true;
             form4editenable(false);
             groupBox1.Text = "Vial Info";
         }
 
-        public void button4_Click(object sender, EventArgs e)
+        public void button4newvial_Click(object sender, EventArgs e)
         {
-            this.textBox1.Text = "...";
+            this.textBox1.Text = "  ";
             this.comboBox1.Text = "";
             this.fieldVialTextBox4.Text = "";
             this.hostTrapTextBox5.Text = "";
@@ -445,12 +460,125 @@ namespace BeetleBase
             dataGridView1.ClearSelection();
             button4.Enabled = false;
             button5.Enabled = true;
+            button8newsimilarvial.Enabled = false;
+            this.showSpecies.Enabled = false;
             string year = DateTime.Today.Year.ToString();
             string month = DateTime.Today.Month.ToString("D2");
             string day = DateTime.Today.Day.ToString("D2");
             comboBox7.Text = year;
             comboBox8.Text = month;
             comboBox9.Text = day;
+        }
+       public void button8_Click(object sender, EventArgs e)
+        {
+            this.textBox1.Text = "   ";
+            button8newsimilarvial.Enabled = false;
+            this.showSpecies.Enabled = false;
+            DataGridViewSelectedRowCollection editted;
+            DataGridViewCellCollection col;
+            if (this.dataGridView1.SelectedCells.Count == 0 && this.dataGridView1.SelectedRows.Count == 0)
+            {
+                return;
+            }
+            if (this.dataGridView1.SelectedCells.Count == 1 && this.dataGridView1.SelectedRows.Count < 1)
+            {
+                int row = this.dataGridView1.SelectedCells[0].RowIndex;
+                dataGridView1.ClearSelection();
+                this.dataGridView1.Rows[row].Selected = true;
+                editted = this.dataGridView1.SelectedRows;
+                col = editted[0].Cells;
+            }
+            else if (this.dataGridView1.SelectedCells.Count > 1)
+            {
+                int row = this.dataGridView1.SelectedCells[0].RowIndex;
+                dataGridView1.ClearSelection();
+                this.dataGridView1.Rows[row].Selected = true;
+                editted = this.dataGridView1.SelectedRows;
+                col = editted[0].Cells;
+            }
+            else
+            {
+                editted = this.dataGridView1.SelectedRows;
+            }
+            form4editenable(true);
+            col = editted[0].Cells;
+
+            char[] delimiterChars = { '/' };
+            string[] words1 = col[10].Value.ToString().Split(delimiterChars);
+            if (words1.Length > 1)
+            {
+                if (Int32.Parse(words1[0]) < 10)
+                {
+                    words1[0] = "0" + words1[0];
+                }
+                if (Int32.Parse(words1[1]) < 10)
+                {
+                    words1[0] = "0" + words1[0];
+                }
+            }
+            string[] words2 = col[13].Value.ToString().Split(delimiterChars);
+            if (words2.Length > 1)
+            {
+                if (Int32.Parse(words2[0]) < 10)
+                {
+                    words1[0] = "0" + words1[0];
+                }
+                if (Int32.Parse(words2[1]) < 10)
+                {
+                    words1[0] = "0" + words1[0];
+                }
+            }
+            groupBox1.Text = "New vial ";
+            this.currentvial = "";
+            comboBox1.Text = col[1].Value.ToString();
+            fieldVialTextBox4.Text = col[2].Value.ToString();
+            hostTrapTextBox5.Text = col[3].Value.ToString();
+            comboBox2.Text = col[4].Value.ToString();
+            comboBox3.Text = col[5].Value.ToString();
+            localityTextBox8.Text = col[9].Value.ToString();
+            textBox9.Text = col[8].Value.ToString();
+            comboBox4.Text = col[7].Value.ToString();
+            comboBox5.Text = col[6].Value.ToString();
+            if (col[14].Value.ToString() == "True")
+            {
+                checkBox1.Checked = true;
+            }
+            else
+            {
+                checkBox1.Checked = false;
+            }
+            //            textBox12.Text = col[10].Value.ToString();
+            if (words1.Length > 1)
+            {
+//                comboBox7.Text = words1[2];
+//                comboBox8.Text = words1[0];
+//                comboBox9.Text = words1[1];
+            }
+            comboBox7.Text = DateTime.Now.Year.ToString();
+            comboBox8.Text = (DateTime.Now.Month > 9) ? DateTime.Now.Month.ToString() : ("0" + DateTime.Now.Month.ToString());
+            comboBox9.Text = (DateTime.Now.Day > 9) ? DateTime.Now.Day.ToString() : ("0" + DateTime.Now.Day.ToString());
+            textBox13.Text = col[11].Value.ToString();
+            //            textBox15.Text = col[12].Value.ToString();
+            if (words2.Length > 1)
+            {
+                comboBox10.Text = words2[2];
+                comboBox11.Text = words2[0];
+                comboBox12.Text = words2[1];
+            }
+            // Added AJJ 2017-06-21
+            comboBox6.Text = col[12].Value.ToString();
+            if (col[14].Value.ToString().Length == 10)
+            {
+                comboBox10.Text = col[14].Value.ToString().Substring(0,4);
+                comboBox11.Text = col[14].Value.ToString().Substring(5,2);
+                comboBox12.Text = col[14].Value.ToString().Substring(8,2);
+            }
+            
+            button2.Enabled = false;
+            button3.Enabled = true;
+            button4.Enabled = false;
+            button5.Enabled = true;  
+   
         }
 
         public void button5_Click(object sender, EventArgs e)
@@ -554,16 +682,19 @@ namespace BeetleBase
                 button3_Click(null, null);
                 form4editenable(false);
                 button4.Enabled = true;
-                button5.Enabled = false;
+                button5.Enabled = false;         
+                button2.Enabled = false;
                 textBox1_KeyUp(null, null, false);
+                MessageBox.Show("New vial created: " + next + "\n\nPlease label the new vial now...","New vial");
             }
             catch (OleDbException err)
             {
+                MessageBox.Show("Error inserting vial information. Please make sure all required fields are filled. Experiment, Capture->storage and collecetor must be present in the menus.\n\nSome fields may have been changed following this error- please check before resubmitting");
                 MessageBox.Show(err.ToString());
 //                MessageBox.Show("Error inserting Data! Did you check to make sure everything is filled out, valid, and in the right format? E.g. Is the date mm/dd/yyyy? Is the fungus a member of it's respective dropdown menu?");
 //                MessageBox.Show(insertmaster);
+                return;
             }
-
         }
 
         private void textBox15_TextChanged(object sender, EventArgs e)
@@ -637,7 +768,7 @@ namespace BeetleBase
         private void textBox1_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (itsUnderControl) { return; }
-            if (!char.IsDigit(e.KeyChar))
+            if (!char.IsDigit(e.KeyChar) && e.KeyChar != '-')
             {
                 e.Handled = true;
             }
@@ -706,5 +837,21 @@ namespace BeetleBase
         private void textBox9_TextChanged(object sender, EventArgs e)
         {
 
-        }    }
+        }
+
+        private void label6_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label5_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label15_Click(object sender, EventArgs e)
+        {
+
+        }
+    }
 }

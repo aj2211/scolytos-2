@@ -148,16 +148,27 @@ namespace BeetleBase
             richTextBox2.Clear();
             richTextBox3.Clear();
             richTextBox4.Clear();
-            string cmd = "SELECT b.[record], a.[vial], (c.[SpCode] & ' - ' & c.[Genus] & ' ' & c.[Species]) as [Species In Vial], b.[count], b.[male], (a.[Country] & '; ' & a.[province] & '; ' & a.[locality]) as [Location], b.[SPECIES_note], b.[borrowed_count], b.[returned_date], b.[loaned_to], b.[loaned_number], b.[from plate], b.[SpCode], b.[PINNED], b.[identifier] FROM (([COLLECTIONS] a LEFT OUTER JOIN [SPECIES_IN_COLLECTIONS] b ON a.[vial] = b.[vial]) LEFT OUTER JOIN [Species_table] c ON b.[SpCode] = c.[SpCode])";
+            string cmd = "SELECT b.[record], a.[vial], (c.[SpCode] & ' - ' & c.[Genus] & ' ' & c.[Species]) as [Species In Vial], b.[count], b.[male], (a.[Country] & '; ' & a.[province] & '; ' & a.[locality]) as [Location], b.[SPECIES_note], b.[borrowed_count], b.[returned_date], b.[loaned_to], b.[loaned_number], b.[from plate], b.[SpCode], b.[PINNED], b.[identifier] FROM (([COLLECTIONS] a LEFT OUTER JOIN [SPECIES_IN_COLLECTIONS] b ON a.[vial] = b.[vial]) LEFT OUTER JOIN [Species_table] c ON b.[SpCode] = c.[SpCode]) WHERE a.vial > 0 ";
             if (textBox1.Text.Trim() != "")
             {
-                cmd += "WHERE a.[vial] = " + textBox1.Text;
-                this.vial.textBox1.Text = textBox1.Text;
+                if (textBox1.Text.Contains("-"))
+                {
+                    string[] searchrange = textBox1.Text.Split('-');
+                    var minvial = searchrange[0];
+                    var maxvial = searchrange[1];
+                    cmd = "SELECT b.[record], a.[vial], (c.[SpCode] & ' - ' & c.[Genus] & ' ' & c.[Species]) as [Species In Vial], b.[count], b.[male], (a.[Country] & '; ' & a.[province] & '; ' & a.[locality]) as [Location], b.[SPECIES_note], b.[borrowed_count], b.[returned_date], b.[loaned_to], b.[loaned_number], b.[from plate], b.[SpCode], b.[PINNED], b.[identifier] FROM (([COLLECTIONS] a LEFT OUTER JOIN [SPECIES_IN_COLLECTIONS] b ON a.[vial] = b.[vial]) LEFT OUTER JOIN [Species_table] c ON b.[SpCode] = c.[SpCode]) WHERE a.vial BETWEEN " + minvial + " and " +maxvial;                
+                }
+                else
+                {
+                    cmd = "SELECT b.[record], a.[vial], (c.[SpCode] & ' - ' & c.[Genus] & ' ' & c.[Species]) as [Species In Vial], b.[count], b.[male], (a.[Country] & '; ' & a.[province] & '; ' & a.[locality]) as [Location], b.[SPECIES_note], b.[borrowed_count], b.[returned_date], b.[loaned_to], b.[loaned_number], b.[from plate], b.[SpCode], b.[PINNED], b.[identifier] FROM (([COLLECTIONS] a LEFT OUTER JOIN [SPECIES_IN_COLLECTIONS] b ON a.[vial] = b.[vial]) LEFT OUTER JOIN [Species_table] c ON b.[SpCode] = c.[SpCode]) WHERE a.vial =" + textBox1.Text;
+                }
+                vial.textBox1.Text = textBox1.Text;
                 if (!loop)
                 {
                     this.vial.textBox1_KeyUp(null, null, false);
                 }
-            }
+                
+            }    
             OleDbCommand vialsearch = new OleDbCommand(cmd, this.thefile.dbo);
             OleDbDataAdapter vialadapter = new OleDbDataAdapter(vialsearch);
             DataSet vials = new DataSet();
@@ -222,7 +233,8 @@ namespace BeetleBase
             textBox5.Text = col[7].Value.ToString();
 
             char[] delimiterChars = { '/' };
-            string[] words1 = col[9].Value.ToString().Split(delimiterChars);
+            string[] words1 = col[8].Value.ToString().Split(delimiterChars);
+            // MessageBox.Show(col[8].Value.ToString());
             if (words1.Length > 1)
             {
                 comboBox1.Text = words1[2];
@@ -367,6 +379,15 @@ namespace BeetleBase
             )
             {
                 updatemaster += ", [returned_date] = '" + comboBox2.Text + "/" + comboBox3.Text + "/" + comboBox1.Text + "'";
+                // delete updatemaster += ", [loaned_to] = '" + textBox7.Text + "'";
+            }
+            if (textBox7.Text == "")
+            {
+                // MessageBox.Show("textbox7is empty?");
+            }
+            else
+            {
+                // MessageBox.Show(textBox7.Text);
                 updatemaster += ", [loaned_to] = '" + textBox7.Text + "'";
             }
             if (textBox14.Text == "")
@@ -399,6 +420,7 @@ namespace BeetleBase
                 updatemaster += " WHERE record = " + currentrecord;
                 // what is this? updatemaster2 was never used
                 //string updatemaster2 = "UPDATE [SPECIES_IN_COLLECTIONS] SET [identifier] = '" + identifiercombo.Text + "' WHERE [record] = " + currentrecord;
+                //MessageBox.Show(updatemaster);
                 try
                 {
                     OleDbCommand up = new OleDbCommand(updatemaster, this.thefile.dbo);
@@ -408,8 +430,8 @@ namespace BeetleBase
                 }
                 catch (OleDbException)
                 {
-                    //                MessageBox.Show("Unable to write Species to Vial. Check to make sure information is valid!");
-//                    MessageBox.Show(updatemaster);
+                    MessageBox.Show("Unable to write Species to Vial. Check to make sure information is valid!");
+                    MessageBox.Show(updatemaster);
                 }
             }
             catch (OleDbException err) { MessageBox.Show(err.ToString()); return; }
@@ -431,7 +453,7 @@ namespace BeetleBase
             {
                 this.vial.Focus();
             }
-            this.vial.button4_Click(null, null);
+            this.vial.button4newvial_Click(null, null);
 
         }
 
@@ -512,6 +534,11 @@ namespace BeetleBase
             }
             col = editted[0].Cells;
             this.currentvial = col[1].Value.ToString();
+            // added to stop people accidentally adding to vial 1
+            if (this.currentvial == "1")
+            {
+                MessageBox.Show("Are you sure you want to add to vial 1? This vial only has Xcrassiculsuclus from New Guinea, new species probably will never be added!");
+            }
             this.textBox8.Text = this.currentvial;
             this.currentrecord = col[0].Value.ToString();
             this.textBox8.ReadOnly = false;
@@ -526,6 +553,7 @@ namespace BeetleBase
         }
 
         private void button7_Click(object sender, EventArgs e)
+        // this is the button to "save new species to vial"
         {
             if (this.thefile.dbo.State != ConnectionState.Open)
             {
@@ -858,7 +886,7 @@ namespace BeetleBase
         private void textBox1_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (itsUnderControl) { return; }
-            if (!char.IsDigit(e.KeyChar))
+            if (!char.IsDigit(e.KeyChar) && e.KeyChar != '-')
             {
                 e.Handled = true;
             }
